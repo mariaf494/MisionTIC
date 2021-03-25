@@ -23,11 +23,11 @@ def filtros(datos):
 	lista_preguntas = list(datos.iloc[:,col_preguntas:].columns)
 	lista_agrupadores = list(datos.iloc[:,1:col_preguntas].columns)
 
-	pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
-	lista_filtros.append(st.selectbox("Seleccione el eje x", ["Pregunta"] +lista_agrupadores))
+	pregunta = st.selectbox("Seleccione qué pregunta desea analizar: ", lista_preguntas)
+	lista_filtros.append(st.selectbox("Qué desea ver en el eje x", ["Pregunta"] +lista_agrupadores))
 	lista_filtros.append(st.selectbox("Dividir por color", [" ", "Pregunta"] +lista_agrupadores))
 	lista_filtros.append(st.selectbox("Dividir por columna", [" ", "Pregunta"] +lista_agrupadores))
-	lista_filtros.append(st.selectbox("Dividir por fila",[" ", "Pregunta"] + lista_agrupadores))
+	lista_filtros.append(st.selectbox("Sub gráficas por fila",[" ", "Pregunta"] + lista_agrupadores))
 
 	filtros_def = [None if x == ' ' else x for x in lista_filtros ]
 	filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def ]
@@ -36,7 +36,7 @@ def filtros(datos):
 	return pregunta, filtros_def, indices	
 
 def main():
-	st.write("""# Visualizaciones """)
+	st.write("""# ESTE ES EL CAMBIO DE MARIANA""")
 
 	file = st.file_uploader('File uploader')
 	if file:
