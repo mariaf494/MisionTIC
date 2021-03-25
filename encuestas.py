@@ -38,7 +38,7 @@ def main():
 			y=1.02,
 			xanchor="right",
 			x=1))
-			st.plotly_chart(fig, use_container_width = True, config= config)
+		st.plotly_chart(fig, use_container_width = True, config= config)
 
 if __name__=="__main__":
 	main()
