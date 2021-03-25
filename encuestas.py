@@ -26,26 +26,19 @@ def main():
 	st.write("""# Visualizaciones """)
 
 	file = st.file_uploader('File uploader')
-	datos = pd.read_excel(file)
-	
-
-	pregunta = filtros(datos)
-
-	pivot = datos.pivot_table(index = pregunta, values= "ID de respuesta", aggfunc="count")
-
-	st.write(pivot)
-
-
-	fig = px.bar(pivot)
-
-	fig.update_layout(legend=dict(
-    orientation="h",
-    yanchor="bottom",
-    y=1.02,
-    xanchor="right",
-    x=1
-))
-	st.plotly_chart(fig, use_container_width = True, config= config)
+	if file:
+		datos = pd.read_excel(file)
+		pregunta = filtros(datos)
+		pivot = datos.pivot_table(index = pregunta, values= "ID de respuesta", aggfunc="count")
+		st.write(pivot)
+		fig = px.bar(pivot)
+		fig.update_layout(legend=dict(
+			orientation="h",
+			yanchor="bottom",
+			y=1.02,
+			xanchor="right",
+			x=1))
+			st.plotly_chart(fig, use_container_width = True, config= config)
 
 if __name__=="__main__":
 	main()
