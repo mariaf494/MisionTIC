@@ -36,7 +36,7 @@ def filtros(datos):
 	return pregunta, filtros_def, indices	
 
 def main():
-	st.write("""# ESTE ES EL CAMBIO DE MARIANA""")
+	st.write("""# ESTE ES EL CAMBIO """)
 
 	file = st.file_uploader('File uploader')
 	if file:
