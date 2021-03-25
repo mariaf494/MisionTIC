@@ -17,10 +17,23 @@ config = {'scrollZoom': True, 'displaylogo': False, 'responsive':True,
   }}
 
 def filtros(datos):
-	lista_preguntas = list(datos.iloc[:,5:].columns)
-	pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
+	lista_filtros = []
 
-	return pregunta	
+	col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
+	lista_preguntas = list(datos.iloc[:,col_preguntas:].columns)
+	lista_agrupadores = list(datos.iloc[:,1:col_preguntas].columns)
+
+	pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
+	lista_filtros.append(st.selectbox("Seleccione el eje x", ["Pregunta"] +lista_agrupadores))
+	lista_filtros.append(st.selectbox("Dividir por color", [" ", "Pregunta"] +lista_agrupadores))
+	lista_filtros.append(st.selectbox("Dividir por columna", [" ", "Pregunta"] +lista_agrupadores))
+	lista_filtros.append(st.selectbox("Dividir por fila",[" ", "Pregunta"] + lista_agrupadores))
+
+	filtros_def = [None if x == ' ' else x for x in lista_filtros ]
+	filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def ]
+	indices = set(filtros_def).difference([None])
+
+	return pregunta, filtros_def, indices	
 
 def main():
 	st.write("""# Visualizaciones """)
@@ -28,10 +41,16 @@ def main():
 	file = st.file_uploader('File uploader')
 	if file:
 		datos = pd.read_excel(file)
-		pregunta = filtros(datos)
-		pivot = datos.pivot_table(index = pregunta, values= "ID de respuesta", aggfunc="count")
-		st.write(pivot)
-		fig = px.bar(pivot)
+		pregunta, filtros_def, indices = filtros(datos)
+		ejex, color, columna, fila = filtros_def
+
+		datos[pregunta] = datos[pregunta].astype(str)
+		pivot = datos.pivot_table(index = indices,
+								  values= "ID de respuesta", aggfunc="count").reset_index()
+		#st.write(pivot)
+		fig = px.bar(pivot, x=ejex, 
+					 y="ID de respuesta", color=color,
+					 facet_row=fila, facet_col=columna, barmode="group")
 		fig.update_layout(legend=dict(
 			orientation="h",
 			yanchor="bottom",
