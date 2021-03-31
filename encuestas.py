@@ -19,7 +19,8 @@ config = {'scrollZoom': True, 'displaylogo': False, 'responsive':True,
 def filtros(datos):
 	lista_filtros = []
 
-	col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
+	#col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
+	col_preguntas = 6
 	lista_preguntas = list(datos.iloc[:,col_preguntas:].columns)
 	lista_agrupadores = list(datos.iloc[:,1:col_preguntas].columns)
 
@@ -36,9 +37,10 @@ def filtros(datos):
 	return pregunta, filtros_def, indices	
 
 def main():
-	st.write("""# Visualizaciones """)
+	st.write("""# Visualizaciones""")
 
-	file = st.file_uploader('File uploader')
+	#file = st.file_uploader('File uploader')
+	file = "Datos_seguimiento_semanal_MinTIC.xlsx"
 	if file:
 		datos = pd.read_excel(file)
 		pregunta, filtros_def, indices = filtros(datos)
@@ -50,7 +52,12 @@ def main():
 		#st.write(pivot)
 		fig = px.bar(pivot, x=ejex, 
 					 y="ID de respuesta", color=color,
-					 facet_row=fila, facet_col=columna, barmode="group")
+					 facet_row=fila, facet_col=columna, barmode="group",
+					 color_discrete_sequence=px.colors.qualitative.Pastel,
+					 text="ID de respuesta")
+		
+		fig.update_traces(textposition='outside')
+
 		fig.update_layout(legend=dict(
 			orientation="h",
 			yanchor="bottom",
