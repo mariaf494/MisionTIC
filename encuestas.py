@@ -41,22 +41,39 @@ def main():
 
 	#file = st.file_uploader('File uploader')
 	file = "Datos_seguimiento_semanal_MinTIC.xlsx"
+	columna_unica = 'ID de respuesta'
+
 	if file:
 		datos = pd.read_excel(file)
 		pregunta, filtros_def, indices = filtros(datos)
 		ejex, color, columna, fila = filtros_def
 
 		datos[pregunta] = datos[pregunta].astype(str)
+
+
 		pivot = datos.pivot_table(index = indices,
-								  values= "ID de respuesta", aggfunc="count").reset_index()
-		#st.write(pivot)
-		fig = px.bar(pivot, x=ejex, 
-					 y="ID de respuesta", color=color,
+								  values= columna_unica, aggfunc="count").reset_index()
+
+		if st.checkbox("Visualizar frecuencia relativa"):
+			total = pivot[columna_unica].sum()
+			pivot['Frecuencia'] = pivot[columna_unica] / total
+			fig = px.bar(pivot, x=ejex, 
+					 y="Frecuencia", color=color,
 					 facet_row=fila, facet_col=columna, barmode="group",
 					 color_discrete_sequence=px.colors.qualitative.Pastel,
-					 text="ID de respuesta")
-		
-		fig.update_traces(textposition='outside')
+					 text="Frecuencia")
+			fig.layout.yaxis.tickformat = ',.0%'
+			fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
+
+		else:
+			fig = px.bar(pivot, x=ejex, 
+						 y=columna_unica, color=color,
+						 facet_row=fila, facet_col=columna, barmode="group",
+						 color_discrete_sequence=px.colors.qualitative.Pastel,
+						 text=columna_unica)
+			fig.update_traces(textposition='outside', texttemplate='%{text}')
+			
+	
 
 		fig.update_layout(legend=dict(
 			orientation="h",
