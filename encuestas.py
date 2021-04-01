@@ -61,7 +61,7 @@ def main():
 					 y="Frecuencia", color=color,
 					 facet_row=fila, facet_col=columna, barmode="group",
 					 color_discrete_sequence=px.colors.qualitative.Pastel,
-					 text="Frecuencia")
+					 text="Frecuencia", template = "simple_white")
 			fig.layout.yaxis.tickformat = ',.0%'
 			fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
 
@@ -70,7 +70,7 @@ def main():
 						 y=columna_unica, color=color,
 						 facet_row=fila, facet_col=columna, barmode="group",
 						 color_discrete_sequence=px.colors.qualitative.Pastel,
-						 text=columna_unica)
+						 text=columna_unica,  template = "simple_white")
 			fig.update_traces(textposition='outside', texttemplate='%{text}')
 			
 	
