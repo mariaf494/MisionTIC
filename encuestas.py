@@ -52,13 +52,13 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 		pivot['Frecuencia'] = pivot[columna_unica] / total
 	else:
 		total = pivot.pivot_table(index=columna_total,
-								values=columna_unica, 
+								values=columna_unica,
 				 				aggfunc='sum').rename(columns={columna_unica:"TOTAL"}).reset_index()
-	
+
 		pivot = pivot.merge(total, on=columna_total)
 		pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
-			
-	fig = px.bar(pivot, x=ejex, 
+
+	fig = px.bar(pivot, x=ejex,
 				 y="Frecuencia", color=color,
 				 facet_row=fila, facet_col=columna, barmode="group",
 				 color_discrete_sequence=px.colors.qualitative.Pastel,
@@ -67,17 +67,17 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
 	fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat = ',.0%'))
 	#fig.layout.yaxis.tickformat = ',.0%'
 	fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
-	return fig 
+	return fig
 
 def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None):
 	fig = px.bar(pivot, x=ejex, y=columna_unica,
-		   color=color, facet_row=fila, 
-		   facet_col=columna, barmode="group", 
+		   color=color, facet_row=fila,
+		   facet_col=columna, barmode="group",
 		   color_discrete_sequence=px.colors.qualitative.Pastel,
 		   text=columna_unica,
 		   facet_col_wrap=4)
 	fig.update_traces(textposition='outside', texttemplate='%{text}')
-	fig.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1), 
+	fig.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
 					  template = "simple_white")
 	return fig
 
@@ -88,17 +88,17 @@ def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
 		columna_total = st.selectbox("Relativo respecto a: ", ["Total"]+indices)
 		fig = relative_bar_chart(columna_total=columna_total,
 								 columna_unica=columna_unica,
-								 pivot=pivot, ejex=ejex, color=color, 
+								 pivot=pivot, ejex=ejex, color=color,
 								 fila=fila, columna=columna, indices=indices)
 	else:
 		fig = absolute_bar_chart(columna_unica=columna_unica,
-								 pivot=pivot, ejex=ejex, color=color, 
+								 pivot=pivot, ejex=ejex, color=color,
 								 fila=fila, columna=columna)
 	return fig
 
 def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None):
 	fig = px.box(pivot, x=ejex, y=columna_unica,
-		   color=color, facet_row=fila, 
+		   color=color, facet_row=fila,
 		   facet_col=columna,
 		   color_discrete_sequence=px.colors.qualitative.Pastel,
 		   facet_col_wrap=4)
@@ -117,23 +117,23 @@ def main():
 		df = copy.deepcopy(datos)
 
 		chart_type = st.radio("Tipo de visualización ",
-							 ("Barras", "Dispersión", "Cajas"))
+							 ("Barras", "Cajas"))
 
 		pregunta, filtros_def, indices, lista_agrupadores = filtros(df, col_preguntas)
 		ejex, color, columna, fila = filtros_def
 		height = st.slider("Ajuste el tamaño vertical de la gráfica", 500,1000)
-		
+
 		df[pregunta] = df[pregunta].astype(str)
 		pivot = pivot_data(df, indices, columna_unica)
 
-		
+
 		if chart_type == "Barras":
 			fig = bar_chart(columna_unica=columna_unica,
-							pivot=pivot, ejex=ejex, color=color, 
+							pivot=pivot, ejex=ejex, color=color,
 							fila=fila, columna=columna, indices=indices)
 		elif chart_type == "Cajas":
 			fig = box_chart(columna_unica=pregunta,
-							pivot=df, ejex=ejex, color=color, 
+							pivot=df, ejex=ejex, color=color,
 							fila=fila, columna=columna, indices=indices)
 			fig.update_yaxes(col=1, title=None)
 
