@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import copy
+from PIL import Image
 
 
 st.set_page_config(layout="wide")
@@ -121,50 +122,75 @@ def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
+def write_init():
+    """Used to write the page in the app.py file"""
+    with st.spinner("Cargando Home ..."):
+        st.write('# Visualización de datos - MINTIC')
+        st.write(
+            """
+            ## Visualizaciones interactivas. 
+
+            Esta página contiene visualizaciones interactivas del proceso de instrucción que se le impartió a los docentes responsables de llevar luego esta información a sus estudiantes.
+
+            """
+        )
+        image = Image.open('MISION.jpeg')
+
+        st.image(image, caption='Sunrise by the mountains')
+
 def main():
-    st.write("""# Visualizaciones""")
+    
 
     # file = st.file_uploader('File uploader')
+
     file = "Datos_seguimiento_semanal_MinTIC.xlsx"
     columna_unica = 'ID de respuesta'
     col_preguntas = 7
+
+    st.sidebar.title("TITULO BONITO")
     pag = st.sidebar.radio("Página: ", ["Inicio", "Encuestas"])
-    if file:
-        datos = load_data(file)
-        df = copy.deepcopy(datos)
-        chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Cajas"))
-        pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros(
-            df, col_preguntas)
-    ejex, color, columna, fila = filtros_def
-    height = st.slider("Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-    # OJO: Acá se actualiza el ORDEN de las resupuestas
-    category_orders = {pregunta: ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"],
-                       pregunta: ["Sí", "No"],
-                       "GENERO": ["F", "M"]}
+    if pag == "Encuestas":
+        st.write("""# Visualizaciones""")
+        if file:
+            datos = load_data(file)
+            df = copy.deepcopy(datos)
+            chart_type = st.radio("Tipo de visualización ",
+                                  ("Barras", "Cajas"))
+            pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros(
+                df, col_preguntas)
+        ejex, color, columna, fila = filtros_def
+        height = st.slider("Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-    df[pregunta] = df[pregunta].astype(str)
-    # st.write(grupo)
-    if grupo != []:
-        df = df.loc[df.Grupo.isin(grupo)]
-    pivot = pivot_data(df, indices, columna_unica)
+        # OJO: Acá se actualiza el ORDEN de las resupuestas
+        category_orders = {pregunta: ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"],
+                           pregunta: ["Sí", "No"],
+                           "GENERO": ["F", "M"]}
 
-    if chart_type == "Barras":
-        fig = bar_chart(columna_unica=columna_unica,
-                        pivot=pivot, ejex=ejex, color=color,
-                        fila=fila, columna=columna, indices=indices, category_orders=category_orders)
-    elif chart_type == "Cajas":
-        fig = box_chart(columna_unica=pregunta,
-                        pivot=df, ejex=ejex, color=color,
-                        fila=fila, columna=columna, indices=indices)
-        fig.update_yaxes(col=1, title=None)
+        df[pregunta] = df[pregunta].astype(str)
+        # st.write(grupo)
+        if grupo != []:
+            df = df.loc[df.Grupo.isin(grupo)]
+        pivot = pivot_data(df, indices, columna_unica)
 
-    fig.for_each_annotation(
-        lambda a: a.update(text=a.text.split("=")[-1]))
-    fig.update_layout(height=height)
+        if chart_type == "Barras":
+            fig = bar_chart(columna_unica=columna_unica,
+                            pivot=pivot, ejex=ejex, color=color,
+                            fila=fila, columna=columna, indices=indices, category_orders=category_orders)
+        elif chart_type == "Cajas":
+            fig = box_chart(columna_unica=pregunta,
+                            pivot=df, ejex=ejex, color=color,
+                            fila=fila, columna=columna, indices=indices)
+            fig.update_yaxes(col=1, title=None)
 
-    st.plotly_chart(fig, use_container_width=True, config=config)
+        fig.for_each_annotation(
+            lambda a: a.update(text=a.text.split("=")[-1]))
+        fig.update_layout(height=height)
+
+        st.plotly_chart(fig, use_container_width=True, config=config)
+    else:
+        write_init()
+
 
 
 if __name__ == "__main__":
