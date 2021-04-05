@@ -130,7 +130,7 @@ def write_init():
             """
             ## Visualizaciones interactivas. 
 
-            Esta página contiene visualizaciones interactivas del proceso de seguimiento semanal a los estudiantes que están participando del proyecto Misión TIC 2022.
+            Esta página contiene visualizaciones interactivas del proceso de seguimiento semanal a los estudiantes que están participando del proyecto Misión TIC 2022 y reciben su formación en la Universidad del Norte.
 
             """
         )
