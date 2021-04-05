@@ -130,11 +130,11 @@ def write_init():
             """
             ## Visualizaciones interactivas. 
 
-            Esta página contiene visualizaciones interactivas del proceso de instrucción que se le impartió a los docentes responsables de llevar luego esta información a sus estudiantes.
+            Esta página contiene visualizaciones interactivas del proceso de seguimiento semanal a los estudiantes que están participando del proyecto Misión TIC 2022.
 
             """
         )
-        image = Image.open('MISION.jpeg')
+        image = Image.open('Pagina_Interna.jpg')
 
         st.image(image, caption='Sunrise by the mountains')
 
@@ -147,7 +147,7 @@ def main():
     columna_unica = 'ID de respuesta'
     col_preguntas = 7
 
-    st.sidebar.title("TITULO BONITO")
+    st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio("Página: ", ["Inicio", "Encuestas"])
 
     if pag == "Encuestas":
