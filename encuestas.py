@@ -136,7 +136,7 @@ def write_init():
         )
         image = Image.open('Pagina_Interna.jpg')
 
-        st.image(image, caption='Misión TIC')
+        st.image(image, caption='')
 
 def main():
     
