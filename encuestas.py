@@ -136,7 +136,7 @@ def write_init():
         )
         image = Image.open('Pagina_Interna.jpg')
 
-        st.image(image, caption='Sunrise by the mountains')
+        st.image(image, caption='')
 
 def main():
     
