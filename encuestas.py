@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import copy
+from PIL import Image
 
 
 st.set_page_config(layout="wide")
@@ -25,7 +26,7 @@ def load_data(file):
 def filtros(datos, col_preguntas):
     lista_filtros = []
 
-    #col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
+    # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
     lista_grupos = datos.Grupo.unique()
@@ -76,7 +77,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
                  facet_col_wrap=4,
                  category_orders=category_orders)
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
-    #fig.layout.yaxis.tickformat = ',.0%'
+    # fig.layout.yaxis.tickformat = ',.0%'
     fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     return fig
 
@@ -121,35 +122,50 @@ def box_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, 
     return fig
 
 
-def main():
-    st.write("""# Visualizaciones""")
+def write_init():
+    """Used to write the page in the app.py file"""
+    with st.spinner("Cargando Home ..."):
+        st.write('# Visualización de datos - MINTIC')
+        st.write(
+            """
+            ## Visualizaciones interactivas. 
 
-    #file = st.file_uploader('File uploader')
+            Esta página contiene visualizaciones interactivas del proceso de instrucción que se le impartió a los docentes responsables de llevar luego esta información a sus estudiantes.
+
+            """
+        )
+        image = Image.open('MISION.jpeg')
+
+        st.image(image, caption='Sunrise by the mountains')
+
+def main():
+    
+
+    # file = st.file_uploader('File uploader')
+
     file = "Datos_seguimiento_semanal_MinTIC.xlsx"
     columna_unica = 'ID de respuesta'
     col_preguntas = 7
 
-    if file:
-        datos = load_data(file)
-        df = copy.deepcopy(datos)
+    st.sidebar.title("TITULO BONITO")
+    pag = st.sidebar.radio("Página: ", ["Inicio", "Encuestas"])
 
-        chart_type = st.radio("Tipo de visualización ",
-                              ("Barras", "Cajas"))
-
-        pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros(
-            df, col_preguntas)
+    if pag == "Encuestas":
+        st.write("""# Visualizaciones""")
+        if file:
+            datos = load_data(file)
+            df = copy.deepcopy(datos)
+            chart_type = st.radio("Tipo de visualización ",
+                                  ("Barras", "Cajas"))
+            pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros(
+                df, col_preguntas)
         ejex, color, columna, fila = filtros_def
-        height = st.slider(
-            "Ajuste el tamaño vertical de la gráfica", 500, 1000)
+        height = st.slider("Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         # OJO: Acá se actualiza el ORDEN de las resupuestas
-        category_orders = {
-            pregunta: [
-                "Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho",
-                "Totalmente satisfecho", "No puedo asistir"],
-            pregunta: ["Sí", "No"],
-            "GENERO": ["F", "M"],
-        }
+        category_orders = {pregunta: ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"],
+                           pregunta: ["Sí", "No"],
+                           "GENERO": ["F", "M"]}
 
         df[pregunta] = df[pregunta].astype(str)
         # st.write(grupo)
@@ -167,10 +183,14 @@ def main():
                             fila=fila, columna=columna, indices=indices)
             fig.update_yaxes(col=1, title=None)
 
-        fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+        fig.for_each_annotation(
+            lambda a: a.update(text=a.text.split("=")[-1]))
         fig.update_layout(height=height)
 
         st.plotly_chart(fig, use_container_width=True, config=config)
+    else:
+        write_init()
+
 
 
 if __name__ == "__main__":
