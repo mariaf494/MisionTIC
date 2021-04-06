@@ -145,7 +145,7 @@ def main():
 
     file = "Datos_seguimiento_semanal_MinTIC.xlsx"
     columna_unica = 'ID de respuesta'
-    col_preguntas = 7
+    col_preguntas = 5
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio("Página: ", ["Inicio", "Encuestas"])
