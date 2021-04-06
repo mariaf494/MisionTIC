@@ -143,7 +143,7 @@ def main():
 
     # file = st.file_uploader('File uploader')
 
-    file = "Datos_seguimiento_semanal_MinTIC.xlsx"
+    file = "Datos_seguimiento_semanal_MisionTIC.xlsx"
     columna_unica = 'ID de respuesta'
     col_preguntas = 5
 
