@@ -162,6 +162,8 @@ def main():
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
 
+        df[pregunta] = df[pregunta].astype(str)
+
         answers = set(df[pregunta])
 
 
@@ -175,7 +177,7 @@ def main():
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
 
-        df[pregunta] = df[pregunta].astype(str)
+ 
 
 
         if grupo != []:
