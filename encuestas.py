@@ -175,6 +175,8 @@ def main():
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
 
+        df[pregunta] = df[pregunta].astype(str)
+
 
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
