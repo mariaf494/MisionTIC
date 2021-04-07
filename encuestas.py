@@ -162,7 +162,7 @@ def main():
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
 
-        df[pregunta] = df[pregunta].astype(str)
+        df[pregunta] = df[pregunta].fillna('NA').astype(str)
 
         answers = set(df[pregunta])
 
