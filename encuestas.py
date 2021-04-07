@@ -162,17 +162,17 @@ def main():
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
 
-        df[pregunta] = df[pregunta].fillna('NA').astype(str)
+        df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
 
 
         if len(set(satisfaction) - answers) < 2 :
             cat_order = satisfaction
-        elif  len(set(yes_no) - set(answers)) < 2:
+        elif  len(set(yes_no) - answers) < 2:
             cat_order = yes_no
         else:
-            cat_order = answers        
+            cat_order = list(answers)        
 
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
