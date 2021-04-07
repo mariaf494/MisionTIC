@@ -82,7 +82,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None,
     return fig
 
 
-def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None):
+def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None):
     fig = px.bar(pivot, x=ejex, y=columna_unica,
                  color=color, facet_row=fila,
                  facet_col=columna, barmode="group",
@@ -97,19 +97,15 @@ def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fi
     return fig
 
 
-def bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
-    st.write(columna_unica)
+def bar_chart(**kwargs):
+    #st.write(kwargs['columna_unica'])
     if st.checkbox("Visualizar frecuencia relativa"):
         columna_total = st.selectbox(
-            "Relativo respecto a: ", ["Total"]+indices)
-        fig = relative_bar_chart(columna_total=columna_total,
-                                 columna_unica=columna_unica,
-                                 pivot=pivot, ejex=ejex, color=color,
-                                 fila=fila, columna=columna, indices=indices, category_orders=category_orders)
+            "Relativo respecto a: ", ["Total"]+kwargs["indices"])
+        kwargs["columna_total"] = columna_total
+        fig = relative_bar_chart(**kwargs)
     else:
-        fig = absolute_bar_chart(columna_unica=columna_unica,
-                                 pivot=pivot, ejex=ejex, color=color,
-                                 fila=fila, columna=columna, category_orders=category_orders)
+        fig = absolute_bar_chart(**kwargs)
     return fig
 
 
@@ -162,21 +158,36 @@ def main():
         ejex, color, columna, fila = filtros_def
         height = st.slider("Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
-        # OJO: Acá se actualiza el ORDEN de las resupuestas
-        category_orders = {pregunta: ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"],
-                           pregunta: ["Sí", "No"],
+        ## YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
+        satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
+        yes_no = ["Sí", "No"]
+
+        answers = set(df[pregunta])
+
+
+        if len(set(satisfaction) - answers) < 2 :
+            cat_order = satisfaction
+        elif  len(set(yes_no) - set(answers)) < 2:
+            cat_order = yes_no
+        else:
+            cat_order = answers        
+
+        category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
 
-        df[pregunta] = df[pregunta].astype(str)
-        # st.write(grupo)
+
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
         pivot = pivot_data(df, indices, columna_unica)
 
         if chart_type == "Barras":
-            fig = bar_chart(columna_unica=columna_unica,
-                            pivot=pivot, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices, category_orders=category_orders)
+
+            argumentos = {"columna_unica":columna_unica, 
+                          "pivot":pivot, "ejex":ejex, "color":color,
+                          "fila":fila, "columna":columna, "indices":indices,
+                          "category_orders":category_orders}
+
+            fig = bar_chart(**argumentos)
         elif chart_type == "Cajas":
             fig = box_chart(columna_unica=pregunta,
                             pivot=df, ejex=ejex, color=color,
