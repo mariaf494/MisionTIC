@@ -167,7 +167,7 @@ def main():
         answers = set(df[pregunta])
 
 
-        if len(set(satisfaction) - answers) < 2 :
+        if len(set(satisfaction) - answers) < 2:
             cat_order = satisfaction
         elif  len(set(yes_no) - answers) < 2:
             cat_order = yes_no
