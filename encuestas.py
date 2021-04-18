@@ -211,8 +211,8 @@ def main():
         fig.update_layout(height=height)
         st.plotly_chart(fig, use_container_width=True, config=config)
 
-      else:
-        write_init()
+    else:
+      write_init()
 
 if __name__ == "__main__":
     main()
