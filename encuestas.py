@@ -18,7 +18,6 @@ config = {'scrollZoom': True, 'displaylogo': False, 'responsive': True,
           }}
 
 
-@st.cache
 def load_data(file):
     return pd.read_excel(file)
 
@@ -161,8 +160,11 @@ def main():
         ## YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
+		HEAD
         dificultad = ["No responde", "Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología" , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
+        dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
+        dudas = ["Sobre la metodología " , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
         tema = ["Manejo del tiempo" , "Plan de vida" , "Manejo del estrés y la ansiedad", "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora" , "2 horas" , "3 horas", "4 horas", "5 horas", "Más de 5 horas"]
 
@@ -170,54 +172,48 @@ def main():
 
         answers = set(df[pregunta])
 
-
-        if len(set(satisfaction) - answers) < 2:
+        if len(set(satisfaction).intersection(answers)) >= len(answers):
         	cat_order = satisfaction
-        elif  len(set(yes_no) - answers) < 2:
+        elif  len(set(yes_no).intersection(answers)) >= len(answers):
         	cat_order = yes_no
-        elif len(set(dificultad) - answers) < 2:
+        elif len(set(dificultad).intersection(answers)) >= len(answers):
         	cat_order = dificultad
-        elif len(set(dudas) - answers) < 2:
+        elif len(set(dudas).intersection(answers)) >= len(answers):
         	cat_order = dudas
-        elif len(set(tema) - answers) < 2:
+        elif len(set(tema).intersection(answers)) >= len(answers):
         	cat_order = tema
-		elif len(set(tiempo) - answers) < 2:
-			cat_order = tiempo
+        elif len(set(tiempo).intersection(answers)) >= len(answers):
+        	cat_order = tiempo
         else:
-        	cat_order = list(answers)     
+        	cat_order = list(answers)
 
-        
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
 
-
         if grupo != []:
-            df = df.loc[df.Grupo.isin(grupo)]
+          df = df.loc[df.Grupo.isin(grupo)]
+
         pivot = pivot_data(df, indices, columna_unica)
 
         if chart_type == "Barras":
+          argumentos = {"columna_unica":columna_unica,
+                        "pivot":pivot, "ejex":ejex, "color":color,
+                        "fila":fila, "columna":columna, "indices":indices,
+                        "category_orders":category_orders}
+          fig = bar_chart(**argumentos)
 
-            argumentos = {"columna_unica":columna_unica, 
-                          "pivot":pivot, "ejex":ejex, "color":color,
-                          "fila":fila, "columna":columna, "indices":indices,
-                          "category_orders":category_orders}
-
-            fig = bar_chart(**argumentos)
         elif chart_type == "Cajas":
-            fig = box_chart(columna_unica=pregunta,
-                            pivot=df, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices)
-            fig.update_yaxes(col=1, title=None)
+          fig = box_chart(columna_unica=pregunta,
+                          pivot=df, ejex=ejex, color=color,
+                          fila=fila, columna=columna, indices=indices)
+          fig.update_yaxes(col=1, title=None)
 
-        fig.for_each_annotation(
-            lambda a: a.update(text=a.text.split("=")[-1]))
+        fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
         fig.update_layout(height=height)
-
         st.plotly_chart(fig, use_container_width=True, config=config)
+
     else:
-        write_init()
-
-
+      write_init()
 
 if __name__ == "__main__":
     main()
