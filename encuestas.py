@@ -139,7 +139,7 @@ def main():
 
     # file = st.file_uploader('File uploader')
 
-    file = "Datos_seguimiento_semanal_MisionTIC.xlsx"
+    file = "Misión_TIC_prueba.xlsx"
     columna_unica = 'ID de respuesta'
     col_preguntas = 4
 
@@ -161,6 +161,10 @@ def main():
         ## YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
+        dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
+        dudas = ["Sobre la metodología" , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
+        tema = ["Manejo del tiempo" , "Plan de vida" , "Manejo del estrés y la ansiedad", "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
+        tiempo = ["1 hora" , "2 horas" , "3 horas", "4 horas", "5 horas", "Más de 5 horas"]
 
         df[pregunta] = df[pregunta].astype(str)
 
@@ -168,16 +172,23 @@ def main():
 
 
         if len(set(satisfaction) - answers) < 2:
-            cat_order = satisfaction
+        	cat_order = satisfaction
         elif  len(set(yes_no) - answers) < 2:
-            cat_order = yes_no
+        	cat_order = yes_no
+        elif len(set(dificultad) - answers) < 2:
+        	cat_order = dificultad
+        elif len(set(dudas) - answers) < 2:
+        	cat_order = dudas
+        elif len(set(tema) - answers) < 2:
+        	cat_order = tema
+		elif len(set(tiempo) - answers) < 2:
+			cat_order = tiempo
         else:
-            cat_order = list(answers)        
+        	cat_order = list(answers)     
 
+        
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
-
- 
 
 
         if grupo != []:
