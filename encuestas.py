@@ -171,6 +171,7 @@ def main():
         answers = set(df[pregunta])
         st.write(answers)
         st.write(set(dudas))
+        st.write(len(set(dudas).intersection(answers)))
         st.write(len(set(dudas).intersection(answers)) == len(answers))
 
 
