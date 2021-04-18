@@ -18,7 +18,6 @@ config = {'scrollZoom': True, 'displaylogo': False, 'responsive': True,
           }}
 
 
-@st.cache
 def load_data(file):
     return pd.read_excel(file)
 
