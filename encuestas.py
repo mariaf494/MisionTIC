@@ -176,11 +176,11 @@ def main():
 
         if len(set(satisfaction) - answers) < 2:
         	cat_order = satisfaction
-        elif  len(set(yes_no).instersection(answers)) == len(answers):
+        elif  len(set(yes_no).intersection(answers)) == len(answers):
         	cat_order = yes_no
         elif len(set(dificultad) - answers) < 2:
         	cat_order = dificultad
-        elif len(set(dudas).instersection(answers)) == len(answers):
+        elif len(set(dudas).intersection(answers)) == len(answers):
         	cat_order = dudas
         elif len(set(tema) - answers) < 2:
           cat_order = tema
