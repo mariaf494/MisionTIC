@@ -140,7 +140,7 @@ def main():
 
     file = "Misión_TIC_prueba.xlsx"
     columna_unica = 'ID de respuesta'
-    col_preguntas = 3
+    col_preguntas = 2
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio("Página: ", ["Inicio", "Encuestas"])
