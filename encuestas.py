@@ -180,44 +180,39 @@ def main():
         elif len(set(dudas) - answers) < 2:
         	cat_order = dudas
         elif len(set(tema) - answers) < 2:
-        	cat_order = tema
-		elif len(set(tiempo) - answers) < 2:
-			cat_order = tiempo
+          cat_order = tema
+        elif len(set(tiempo) - answers) < 2:
+          cat_order = tiempo
         else:
-        	cat_order = list(answers)     
+          cat_order = list(answers)
 
-        
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M"]}
 
-
         if grupo != []:
-            df = df.loc[df.Grupo.isin(grupo)]
+          df = df.loc[df.Grupo.isin(grupo)]
+
         pivot = pivot_data(df, indices, columna_unica)
 
         if chart_type == "Barras":
+          argumentos = {"columna_unica":columna_unica,
+                        "pivot":pivot, "ejex":ejex, "color":color,
+                        "fila":fila, "columna":columna, "indices":indices,
+                        "category_orders":category_orders}
+          fig = bar_chart(**argumentos)
 
-            argumentos = {"columna_unica":columna_unica, 
-                          "pivot":pivot, "ejex":ejex, "color":color,
-                          "fila":fila, "columna":columna, "indices":indices,
-                          "category_orders":category_orders}
-
-            fig = bar_chart(**argumentos)
         elif chart_type == "Cajas":
-            fig = box_chart(columna_unica=pregunta,
-                            pivot=df, ejex=ejex, color=color,
-                            fila=fila, columna=columna, indices=indices)
-            fig.update_yaxes(col=1, title=None)
+          fig = box_chart(columna_unica=pregunta,
+                          pivot=df, ejex=ejex, color=color,
+                          fila=fila, columna=columna, indices=indices)
+          fig.update_yaxes(col=1, title=None)
 
-        fig.for_each_annotation(
-            lambda a: a.update(text=a.text.split("=")[-1]))
+        fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
         fig.update_layout(height=height)
-
         st.plotly_chart(fig, use_container_width=True, config=config)
-    else:
+
+      else:
         write_init()
-
-
 
 if __name__ == "__main__":
     main()
