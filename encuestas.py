@@ -169,11 +169,6 @@ def main():
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
-        st.write(answers)
-        st.write(set(dudas))
-        st.write(len(set(dudas).intersection(answers)))
-        st.write(len(set(dudas).intersection(answers)) == len(answers))
-
 
         if len(set(satisfaction).intersection(answers)) == len(answers):
         	cat_order = satisfaction
