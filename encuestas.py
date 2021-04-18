@@ -175,17 +175,17 @@ def main():
         st.write(len(set(dudas).intersection(answers)) == len(answers))
 
 
-        if len(set(satisfaction) - answers) < 2:
+        if len(set(satisfaction).intersection(answers)) == len(answers):
         	cat_order = satisfaction
         elif  len(set(yes_no).intersection(answers)) == len(answers):
         	cat_order = yes_no
-        elif len(set(dificultad) - answers) < 2:
+        elif len(set(dificultad).intersection(answers)) == len(answers):
         	cat_order = dificultad
         elif len(set(dudas).intersection(answers)) == len(answers):
         	cat_order = dudas
-        elif len(set(tema) - answers) < 2:
+        elif len(set(tema).intersection(answers)) == len(answers):
           cat_order = tema
-        elif len(set(tiempo) - answers) < 2:
+        elif len(set(tiempo).intersection(answers)) == len(answers):
           cat_order = tiempo
         else:
           cat_order = list(answers)
