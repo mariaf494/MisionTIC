@@ -160,7 +160,6 @@ def main():
         ## YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
-		HEAD
         dificultad = ["No responde", "Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología" , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
         dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
