@@ -141,7 +141,7 @@ def main():
 
     file = "Misión_TIC_prueba.xlsx"
     columna_unica = 'ID de respuesta'
-    col_preguntas = 4
+    col_preguntas = 3
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio("Página: ", ["Inicio", "Encuestas"])
@@ -161,7 +161,7 @@ def main():
         ## YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
-        dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
+        dificultad = ["No responde", "Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología" , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
         tema = ["Manejo del tiempo" , "Plan de vida" , "Manejo del estrés y la ansiedad", "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora" , "2 horas" , "3 horas", "4 horas", "5 horas", "Más de 5 horas"]
