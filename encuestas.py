@@ -162,7 +162,7 @@ def main():
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra", "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
         yes_no = ["Sí", "No"]
         dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
-        dudas = ["Sobre la metodología" , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
+        dudas = ["Sobre la metodología " , "Compresión de las temáticas", "Asociado a los retos", "Instrucciones recibidas"]
         tema = ["Manejo del tiempo" , "Plan de vida" , "Manejo del estrés y la ansiedad", "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora" , "2 horas" , "3 horas", "4 horas", "5 horas", "Más de 5 horas"]
 
