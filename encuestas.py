@@ -169,6 +169,9 @@ def main():
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
+        st.write(answers)
+        st.write(set(dudas))
+        st.write(len(set(dudas) - answers))
 
 
         if len(set(satisfaction) - answers) < 2:
