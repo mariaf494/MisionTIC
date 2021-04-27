@@ -1,4 +1,3 @@
 # MisionTIC
 
-aa
 a
