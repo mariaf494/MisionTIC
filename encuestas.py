@@ -68,7 +68,7 @@ def filtros_encuesta(datos, col_preguntas):
     return pregunta, filtros_def, indices, lista_agrupadores, grupo
 
 
-def filtros_habilidades(datos, col_preguntas):
+def filtros_habilidades(datos, col_preguntas, grafica):
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_filtros = []
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
@@ -77,6 +77,9 @@ def filtros_habilidades(datos, col_preguntas):
     lista_grupos = datos.Grupo.unique()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
 
+    if grafica == 'Barras':
+        lista_filtros.append(st.selectbox("Seleccione el eje y",
+                                          ["Dimensión"] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Seleccione el eje x",
                                       ["Dimensión"] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por color", [
@@ -147,7 +150,7 @@ def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex
                        color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30)
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
     fig.layout.yaxis.tickformat = ',.0%'
-    #fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
+    # fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     return fig
 
 
@@ -159,7 +162,7 @@ def absolute_hist_chart(columna_unica=None, pivot=None, ejex=None, color=None, f
 
     fig.update_layout(legend=dict(orientation="h", yanchor="bottom",
                                   y=1.02, xanchor="right", x=1), template="simple_white")
-    #fig.update_traces(overwrite=True, marker={"opacity": 0.5})
+    # fig.update_traces(overwrite=True, marker={"opacity": 0.5})
     return fig
 
 
@@ -281,13 +284,17 @@ def main():
         file = "Datos_nuevos_prueba.xlsx"
         st.write("""# Visualizaciones""")
         if file:
+            fig = None
             datos = load_data(file)
             df = copy.deepcopy(datos)
             chart_type = st.radio(
                 "Tipo de visualización ", ("Histograma", "Cajas"))
             pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros_habilidades(
-                df, col_preguntas)
-            ejex, color, columna, fila = filtros_def
+                df, col_preguntas, chart_type)
+            if chart_type == 'Barras':
+                ejey, ejex, color, columna, fila = filtros_def
+            else:
+                ejex, color, columna, fila = filtros_def
             height = st.slider(
                 "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
@@ -338,14 +345,22 @@ def main():
                               "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
                 fig = hist_chart(**argumentos)
             elif chart_type == "Cajas":
-                fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
-                                color=color, fila=fila, columna=columna, indices=indices)
-                fig.update_yaxes(col=1, title=None)
-
-            fig.for_each_annotation(
-                lambda a: a.update(text=a.text.split("=")[-1]))
-            fig.update_layout(height=height)
-            st.plotly_chart(fig, use_container_width=True, config=config)
+                if ejex == pregunta:
+                    st.warning(
+                        'Seleccione un eje X diferente para ver la grafica')
+                else:
+                    fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+                                    color=color, fila=fila, columna=columna, indices=indices)
+                    fig.update_yaxes(col=1, title=None)
+            elif chart_type == "Barras":
+                argumentos = {"ejey": ejey, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
+                fig = bar_chart(**argumentos)
+            if fig is not None:
+                fig.for_each_annotation(
+                    lambda a: a.update(text=a.text.split("=")[-1]))
+                fig.update_layout(height=height)
+                st.plotly_chart(fig, use_container_width=True, config=config)
     else:
         write_init()
 
