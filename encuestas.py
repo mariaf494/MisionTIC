@@ -156,7 +156,7 @@ def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex
 
 def absolute_hist_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None):
 
-    tipo = st.radio("", ["relative", "group", "overlay"])
+    tipo = st.radio("", ["group"])
     fig = px.histogram(pivot, x=ejex, color=color, facet_row=fila, facet_col=columna,  barmode=tipo, cumulative=False,
                        color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30)
 
@@ -365,7 +365,7 @@ def main():
                     lambda a: a.update(text=a.text.split("=")[-1]))
                 fig.update_layout(height=height)
                 st.plotly_chart(fig, use_container_width=True, config=config)
-                st.markdown("Nota: los puntajes obtenidos por los participantes han sido estandarizado en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estandar es 10")
+                st.markdown("Nota: los puntajes obtenidos por los participantes en la evaluación de sus conocimientos en programación han sido estandarizados en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estándar es 10")
     else:
         write_init()
 
