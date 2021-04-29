@@ -156,7 +156,7 @@ def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex
 
 def absolute_hist_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None):
 
-    tipo = st.radio("", ["grupos"])
+    tipo = st.radio("", ["group"])
     fig = px.histogram(pivot, x=ejex, color=color, facet_row=fila, facet_col=columna,  barmode=tipo, cumulative=False,
                        color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30)
 
