@@ -365,7 +365,7 @@ def main():
                     lambda a: a.update(text=a.text.split("=")[-1]))
                 fig.update_layout(height=height)
                 st.plotly_chart(fig, use_container_width=True, config=config)
-                st.markdown("Esta gráfica corresponde a ...")
+                st.markdown("Nota: los puntajes obtenidos por los participantes han sido estandarizado en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estandar es 10")
     else:
         write_init()
 
