@@ -146,7 +146,7 @@ def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex
             columns={columna_unica: "TOTAL"}).reset_index()
         pivot = pivot.merge(total, on=columna_total)
         pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
-    fig = px.histogram(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="overlay", cumulative=False,
+    fig = px.histogram(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="group", cumulative=False,
                        color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30, range_y=(0, 1))
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
     fig.layout.yaxis.tickformat = ',.0%'
