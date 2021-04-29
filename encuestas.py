@@ -281,7 +281,7 @@ def main():
             fig.update_layout(height=height)
             st.plotly_chart(fig, use_container_width=True, config=config)
     elif pag == "Habilidades en programación":
-        file = "Datos_nuevos_prueba.xlsx"
+        file = "Datos_nuevos_prueba1.xlsx"
         st.write("""# Visualizaciones""")
         if file:
             fig = None
