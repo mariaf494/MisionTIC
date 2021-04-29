@@ -109,7 +109,7 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=
         pivot = pivot.merge(total, on=columna_total)
         pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
     fig = px.bar(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="group",
-                 color_discrete_sequence=px.colors.qualitative.Pastel, text="Frecuencia", facet_col_wrap=4, category_orders=category_orders)
+                 color_discrete_sequence=px.colors.qualitative.Pastel, text="Frecuencia", facet_col_wrap=4, category_orders=category_orders, range_y=(0, 1))
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
     # fig.layout.yaxis.tickformat = ',.0%'
     fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
@@ -147,7 +147,7 @@ def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex
         pivot = pivot.merge(total, on=columna_total)
         pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
     fig = px.histogram(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="overlay", cumulative=False,
-                       color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30)
+                       color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30, range_y=(0, 1))
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
     fig.layout.yaxis.tickformat = ',.0%'
     # fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
@@ -356,11 +356,16 @@ def main():
                 argumentos = {"ejey": ejey, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
                               "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
                 fig = bar_chart(**argumentos)
+
+            elif chart_type == 'Dispersión':
+                fig = px.scatter(
+                    df, y=pregunta, x='Interes en la programación')
             if fig is not None:
                 fig.for_each_annotation(
                     lambda a: a.update(text=a.text.split("=")[-1]))
                 fig.update_layout(height=height)
                 st.plotly_chart(fig, use_container_width=True, config=config)
+                st.markdown("Esta gráfica corresponde a ...")
     else:
         write_init()
 
