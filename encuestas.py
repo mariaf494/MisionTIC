@@ -150,6 +150,7 @@ def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex
                        color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30, range_y=(0, 1))
     fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
     fig.layout.yaxis.tickformat = ',.0%'
+    fig.update_traces(textposition='outside', texttemplate='%{text}')
     #fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     return fig
 
