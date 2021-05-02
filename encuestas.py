@@ -259,7 +259,7 @@ def main():
             else:
                 cat_order = list(answers)
 
-            category_orders = {pregunta: cat_order, "GENERO": ["F", "M"]}
+            category_orders = {pregunta: cat_order, "GENERO": ["F", "M" , "Nb", "Otros"]}
 
             if grupo != []:
                 df = df.loc[df.Grupo.isin(grupo)]
@@ -300,12 +300,12 @@ def main():
 
             # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
             satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
-                            "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
+                            "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
             yes_no = ["Sí", "No"]
-            dificultad = ["No responde", "Muy bajo",
+            dificultad = ["No tuvo dificultades", "Muy bajo",
                           "Bajo", "Intermedio", "Alto", "Muy alto"]
             dudas = ["Sobre la metodología", "Compresión de las temáticas",
-                     "Asociado a los retos", "Instrucciones recibidas"]
+                     "Asociado a los retos", "Instrucciones recibidas" , "No tuvo dificultades"]
             dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
             dudas = ["Sobre la metodología ", "Compresión de las temáticas",
                      "Asociado a los retos", "Instrucciones recibidas"]
