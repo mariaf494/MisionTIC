@@ -31,6 +31,7 @@ def filtros_encuesta(datos, col_preguntas):
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
     lista_grupos = datos.Grupo.unique()
+    lista_grupos.sort()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
 
     lista_filtros.append(st.selectbox("Seleccione el eje x",
@@ -202,7 +203,7 @@ def pag_encuestas(col_preguntas, columna_unica):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
-        satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
+        satisfaction = ["Nada satisfecho", "Poco satisfecho", "Neutra",
                         "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
         yes_no = ["Sí", "No"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
@@ -237,26 +238,49 @@ def pag_encuestas(col_preguntas, columna_unica):
             cat_order = list(answers)
 
         category_orders = {pregunta: cat_order,
-                           "GENERO": ["F", "M", "Nb", "Otros"]}
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)]}
 
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
+        df["Grupo"] = df["Grupo"].astype(str)
+        if len(df) == 0:
+            st.warning(
+                "El / los grupos seleccionados no tienen datos para mostrar")
+        else:
+            if chart_type == "Barras":
+                pivot = pivot_data(df, indices, columna_unica, 'count')
 
-        if chart_type == "Barras":
-            pivot = pivot_data(df, indices, columna_unica, 'sum')
-            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                          "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
-            fig = bar_chart(**argumentos)
+                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
+                if fila == "Grupo" or columna == "Grupo":
+                    if len(df.Grupo.unique()) > 10:
+                        st.warning(
+                            "Por favor use los filtros para seleccionar menos grupos")
+                    else:
+                        fig = bar_chart(**argumentos)
+                        fig.for_each_annotation(
+                            lambda a: a.update(text=a.text.split("=")[-1]))
+                        fig.update_layout(height=height)
+                        st.plotly_chart(
+                            fig, use_container_width=True, config=config)
 
-        elif chart_type == "Cajas":
-            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
-                            color=color, fila=fila, columna=columna, indices=indices)
-            fig.update_yaxes(col=1, title=None)
+                else:
+                    fig = bar_chart(**argumentos)
+                    fig.for_each_annotation(
+                        lambda a: a.update(text=a.text.split("=")[-1]))
+                    fig.update_layout(height=height)
+                    st.plotly_chart(
+                        fig, use_container_width=True, config=config)
 
-        fig.for_each_annotation(
-            lambda a: a.update(text=a.text.split("=")[-1]))
-        fig.update_layout(height=height)
-        st.plotly_chart(fig, use_container_width=True, config=config)
+            elif chart_type == "Cajas":
+                fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+                                color=color, fila=fila, columna=columna, indices=indices)
+                fig.update_yaxes(col=1, title=None)
+
+                fig.for_each_annotation(
+                    lambda a: a.update(text=a.text.split("=")[-1]))
+                fig.update_layout(height=height)
+                st.plotly_chart(fig, use_container_width=True, config=config)
 
 
 def pag_habilidades(col_preguntas, columna_unica):
@@ -335,7 +359,7 @@ def pag_habilidades(col_preguntas, columna_unica):
 
 
 def main():
-    col_preguntas = 4
+    col_preguntas = 3
     columna_unica = 'ID de respuesta'
 
     st.sidebar.title("Misión TIC")
