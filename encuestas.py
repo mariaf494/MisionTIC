@@ -205,7 +205,7 @@ def write_init():
 
 def main():
     columna_unica = 'ID de respuesta'
-    col_preguntas = 3
+    col_preguntas = 4
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio(
