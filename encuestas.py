@@ -187,75 +187,8 @@ def write_init():
         st.image(image, caption='')
 
 
-<<<<<<< Updated upstream
-def main():
-    columna_unica = 'ID de respuesta'
-    col_preguntas = 4
-
-    st.sidebar.title("Misión TIC")
-    pag = st.sidebar.radio(
-        "Página: ", ["Inicio", "Encuesta", "Habilidades en programación"])
-    if pag == "Encuesta":
-        file = "Ciclo1_semana1_plataforma.xlsx"
-        st.write("""# Visualizaciones""")
-        if file:
-            datos = load_data(file)
-            df = copy.deepcopy(datos)
-            chart_type = st.radio(
-                "Tipo de visualización ", ("Barras", "Cajas"))
-            pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros_encuesta(
-                df, col_preguntas)
-            ejex, color, columna, fila = filtros_def
-            height = st.slider(
-                "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-
-            # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
-            satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
-                            "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
-            yes_no = ["Sí", "No"]
-            dificultad = ["No responde", "Muy bajo",
-                          "Bajo", "Intermedio", "Alto", "Muy alto"]
-            dudas = ["Sobre la metodología", "Compresión de las temáticas",
-                     "Asociado a los retos", "Instrucciones recibidas"]
-            dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
-            dudas = ["Sobre la metodología ", "Compresión de las temáticas",
-                     "Asociado a los retos", "Instrucciones recibidas"]
-            tema = ["Manejo del tiempo", "Plan de vida", "Manejo del estrés y la ansiedad",
-                    "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
-            tiempo = ["1 hora", "2 horas", "3 horas",
-                      "4 horas", "5 horas", "Más de 5 horas"]
-
-            df[pregunta] = df[pregunta].astype(str)
-
-            answers = set(df[pregunta])
-
-            if len(set(satisfaction).intersection(answers)) >= len(answers):
-                cat_order = satisfaction
-            elif len(set(yes_no).intersection(answers)) >= len(answers):
-                cat_order = yes_no
-            elif len(set(dificultad).intersection(answers)) >= len(answers):
-                cat_order = dificultad
-            elif len(set(dudas).intersection(answers)) >= len(answers):
-                cat_order = dudas
-            elif len(set(tema).intersection(answers)) >= len(answers):
-                cat_order = tema
-            elif len(set(tiempo).intersection(answers)) >= len(answers):
-                cat_order = tiempo
-            else:
-                cat_order = list(answers)
-
-            category_orders = {pregunta: cat_order, "GENERO": ["F", "M" , "Nb", "Otros"]}
-
-            if grupo != []:
-                df = df.loc[df.Grupo.isin(grupo)]
-
-            pivot = pivot_data(df, indices, columna_unica)
-
-            if chart_type == "Barras":
-                argumentos = {"columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-=======
 def pag_encuestas(col_preguntas, columna_unica):
-    file = "Misión_TIC_prueba.xlsx"
+    file = "Ciclo1_semana1_plataforma.xlsx"
     st.write("""# Visualizaciones""")
     if file:
         datos = load_data(file)
@@ -270,12 +203,12 @@ def pag_encuestas(col_preguntas, columna_unica):
 
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
-                        "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir"]
+                        "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
         yes_no = ["Sí", "No"]
-        dificultad = ["No responde", "Muy bajo",
+        dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología", "Compresión de las temáticas",
-                 "Asociado a los retos", "Instrucciones recibidas"]
+                 "Asociado a los retos", "Instrucciones recibidas", "No tuvo dificultades"]
         dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología ", "Compresión de las temáticas",
                  "Asociado a los retos", "Instrucciones recibidas"]
@@ -303,7 +236,8 @@ def pag_encuestas(col_preguntas, columna_unica):
         else:
             cat_order = list(answers)
 
-        category_orders = {pregunta: cat_order, "GENERO": ["F", "M"]}
+        category_orders = {pregunta: cat_order,
+                           "GENERO": ["F", "M", "Nb", "Otros"]}
 
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
@@ -344,7 +278,7 @@ def pag_habilidades(col_preguntas, columna_unica):
 
         df[pregunta] = df[pregunta].astype(float)
 
-        category_orders = {"GENERO": ["F", "M"]}
+        category_orders = {"GENERO": ["F", "M", "Nb", "Otros"]}
 
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
@@ -362,7 +296,6 @@ def pag_habilidades(col_preguntas, columna_unica):
                 pivot = pivot_data(histogram_df, indices,
                                    columna_unica, "count")
                 argumentos = {"relativo": False, "columna_unica": columna_unica, "pivot": pivot, "ejex": "Puntaje en: "+pregunta, "color": color,
->>>>>>> Stashed changes
                               "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
                 fig = bar_chart(**argumentos)
             # pivot_prueba = prueba.pivot_table(
@@ -398,66 +331,11 @@ def pag_habilidades(col_preguntas, columna_unica):
                 lambda a: a.update(text=a.text.split("=")[-1]))
             fig.update_layout(height=height)
             st.plotly_chart(fig, use_container_width=True, config=config)
-<<<<<<< Updated upstream
-    elif pag == "Habilidades en programación":
-        file = "Datos_nuevos_prueba1.xlsx"
-        st.write("""# Visualizaciones""")
-        if file:
-            fig = None
-            datos = load_data(file)
-            df = copy.deepcopy(datos)
-            chart_type = st.radio(
-                "Tipo de visualización ", ("Histograma", "Cajas"))
-            pregunta, filtros_def, indices, lista_agrupadores, grupo = filtros_habilidades(
-                df, col_preguntas, chart_type)
-            if chart_type == 'Barras':
-                ejey, ejex, color, columna, fila = filtros_def
-            else:
-                ejex, color, columna, fila = filtros_def
-            height = st.slider(
-                "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-
-            # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
-            satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
-                            "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
-            yes_no = ["Sí", "No"]
-            dificultad = ["No tuvo dificultades", "Muy bajo",
-                          "Bajo", "Intermedio", "Alto", "Muy alto"]
-            dudas = ["Sobre la metodología", "Compresión de las temáticas",
-                     "Asociado a los retos", "Instrucciones recibidas" , "No tuvo dificultades"]
-            dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
-            dudas = ["Sobre la metodología ", "Compresión de las temáticas",
-                     "Asociado a los retos", "Instrucciones recibidas"]
-            tema = ["Manejo del tiempo", "Plan de vida", "Manejo del estrés y la ansiedad",
-                    "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
-            tiempo = ["1 hora", "2 horas", "3 horas",
-                      "4 horas", "5 horas", "Más de 5 horas"]
-
-            df[pregunta] = df[pregunta].astype(float)
-
-            answers = set(df[pregunta])
-
-            if len(set(satisfaction).intersection(answers)) >= len(answers):
-                cat_order = satisfaction
-            elif len(set(yes_no).intersection(answers)) >= len(answers):
-                cat_order = yes_no
-            elif len(set(dificultad).intersection(answers)) >= len(answers):
-                cat_order = dificultad
-            elif len(set(dudas).intersection(answers)) >= len(answers):
-                cat_order = dudas
-            elif len(set(tema).intersection(answers)) >= len(answers):
-                cat_order = tema
-            elif len(set(tiempo).intersection(answers)) >= len(answers):
-                cat_order = tiempo
-            else:
-                cat_order = list(answers)
-=======
             st.markdown("Nota: los puntajes obtenidos por los participantes en la evaluación de sus conocimientos en programación han sido estandarizados en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estándar es 10")
->>>>>>> Stashed changes
 
 
 def main():
-    col_preguntas = 3
+    col_preguntas = 4
     columna_unica = 'ID de respuesta'
 
     st.sidebar.title("Misión TIC")
