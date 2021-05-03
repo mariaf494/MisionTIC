@@ -203,21 +203,17 @@ def pag_encuestas(col_preguntas, columna_unica):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
-        satisfaction = ["Nada satisfecho", "Poco satisfecho", "Neutra",
+        satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
                         "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
         yes_no = ["Sí", "No"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología", "Compresión de las temáticas",
-                 "Asociado a los retos", "Instrucciones recibidas", "No tuvo dificultades"]
-        dificultad = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
-        dudas = ["Sobre la metodología ", "Compresión de las temáticas",
                  "Asociado a los retos", "Instrucciones recibidas"]
         tema = ["Manejo del tiempo", "Plan de vida", "Manejo del estrés y la ansiedad",
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
-
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
