@@ -58,14 +58,21 @@ def filtros_habilidades(datos, col_preguntas, grafica):
     lista_grupos = datos.Grupo.unique()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
 
-    lista_filtros.append(st.selectbox("Seleccione el eje x",
-                                      ["Dimensión"] + lista_agrupadores))
+    if grafica == 'Histograma':
+        lista_filtros.append(st.selectbox("Seleccione el eje x", [
+                             "Dimensión"]))
+    elif grafica == "Cajas" or grafica == "Barras":
+        lista_filtros.append(st.selectbox(
+            "Seleccione el eje x", lista_agrupadores))
+    else:
+        lista_filtros.append(st.selectbox("Seleccione el eje x", [
+                             "Dimensión"] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por color", [
-        " ", "Dimensión"] + lista_agrupadores))
+        " "] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por columna", [
-        " ", "Dimensión"] + lista_agrupadores))
+        " "] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por fila", [
-        " ", "Dimensión"] + lista_agrupadores))
+        " "] + lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Dimensión" else x for x in filtros_def]
@@ -77,7 +84,7 @@ def pivot_data(datos, indices, columna_unica, aggfunc):
     return datos.pivot_table(index=indices, values=columna_unica, aggfunc=aggfunc).reset_index()
 
 
-def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
+def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None, range_y=None, label=""):
     if columna_total == "Total":
         total = pivot[columna_unica].sum()
         pivot['Frecuencia'] = pivot[columna_unica] / total
@@ -87,18 +94,15 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=
         pivot = pivot.merge(total, on=columna_total)
         pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
     fig = px.bar(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="group",
-                 color_discrete_sequence=px.colors.qualitative.Pastel, text="Frecuencia", facet_col_wrap=4, category_orders=category_orders, range_y=(0, 1))
-    fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
-    fig.layout.yaxis.tickformat = ',.0%'
-    fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
+                 color_discrete_sequence=px.colors.qualitative.Pastel, text="Frecuencia", facet_col_wrap=4, category_orders=category_orders, range_y=range_y, labels={"Frecuenca": label})
+
     return fig
 
 
-def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None):
+def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None, range_y=None, label=""):
     fig = px.bar(pivot, x=ejex, y=columna_unica, color=color, facet_row=fila, facet_col=columna, barmode="group",
                  color_discrete_sequence=px.colors.qualitative.Pastel, text=columna_unica, facet_col_wrap=4, category_orders=category_orders,
-                 labels={columna_unica: "Cuenta"})
-    fig.update_traces(textposition='outside', texttemplate='%{text}')
+                 labels={columna_unica: label}, range_y=range_y, title=ejex)
     fig.update_layout(legend=dict(orientation="h", yanchor="bottom",
                                   y=1.02, xanchor="right", x=1), template="simple_white")
     return fig
@@ -114,54 +118,18 @@ def bar_chart(**kwargs):
     kwargs.pop('relativo')
     if relativo_yesno:
         columna_total = st.selectbox("Relativo respecto a: ", [
-                                     "Total"]+kwargs["indices"])
+            "Total"]+kwargs["indices"])
         kwargs["columna_total"] = columna_total
+        kwargs['range_y'] = (0, 1)
+        kwargs['label'] = 'Frecuencia relativa'
         fig = relative_bar_chart(**kwargs)
+        fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
+        fig.layout.yaxis.tickformat = ',.0%'
+        fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
     else:
         fig = absolute_bar_chart(**kwargs)
-    return fig
-
-
-def relative_hist_chart(columna_total=None, columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None):
-    if columna_total == "Total":
-        total = pivot[columna_unica].sum()
-        pivot['Frecuencia'] = pivot[columna_unica] / total
-    else:
-        total = pivot.pivot_table(index=columna_total, values=columna_unica, aggfunc='sum').rename(
-            columns={columna_unica: "TOTAL"}).reset_index()
-        pivot = pivot.merge(total, on=columna_total)
-        pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
-    fig = px.histogram(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="group", cumulative=False,
-                       color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30, range_y=(0, 1))
-    fig.for_each_yaxis(lambda yaxis:  yaxis.update(tickformat=',.0%'))
-    fig.layout.yaxis.tickformat = ',.0%'
-    # fig.update_traces(textposition='outside', texttemplate='%{text:,.2%}')
-    return fig
-
-
-def absolute_hist_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None):
-
-    # tipo = st.radio("", ["group"])
-    fig = px.histogram(pivot, x=ejex, histfunc='count', color=color, facet_row=fila, facet_col=columna,  barmode="group", cumulative=False,
-                       color_discrete_sequence=px.colors.qualitative.Set2, facet_col_wrap=4, category_orders=category_orders, nbins=30)
-
-    fig.update_layout(legend=dict(orientation="h", yanchor="bottom",
-                                  y=1.02, xanchor="right", x=1), template="simple_white")
-    # fig.update_traces(overwrite=True, marker={"opacity": 0.5})
-    return fig
-
-
-def hist_chart(**kwargs):
-    # st.write(kwargs['columna_unica'])
-    if st.checkbox("Visualizar frecuencia relativa"):
-        columna_total = st.selectbox("Relativo respecto a: ", [
-                                     "Total"]+kwargs["indices"])
-        kwargs["columna_total"] = columna_total
-        fig = relative_hist_chart(**kwargs)
-        fig.update_yaxes(col=1, title=None)
-    else:
-        fig = absolute_hist_chart(**kwargs)
-        fig.update_yaxes(col=1, title=None)
+        fig.update_traces(textposition='outside',
+                          texttemplate='%{text}')
     return fig
 
 
@@ -242,41 +210,27 @@ def pag_encuestas(col_preguntas, columna_unica):
         if len(df) == 0:
             st.warning(
                 "El / los grupos seleccionados no tienen datos para mostrar")
+        elif (fila == "Grupo" or columna == "Grupo") and (len(df.Grupo.unique()) > 10):
+            st.warning(
+                "Por favor use los filtros para seleccionar menos grupos")
         else:
             if chart_type == "Barras":
                 pivot = pivot_data(df, indices, columna_unica, 'count')
 
                 argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
-                if fila == "Grupo" or columna == "Grupo":
-                    if len(df.Grupo.unique()) > 10:
-                        st.warning(
-                            "Por favor use los filtros para seleccionar menos grupos")
-                    else:
-                        fig = bar_chart(**argumentos)
-                        fig.for_each_annotation(
-                            lambda a: a.update(text=a.text.split("=")[-1]))
-                        fig.update_layout(height=height)
-                        st.plotly_chart(
-                            fig, use_container_width=True, config=config)
-
-                else:
-                    fig = bar_chart(**argumentos)
-                    fig.for_each_annotation(
-                        lambda a: a.update(text=a.text.split("=")[-1]))
-                    fig.update_layout(height=height)
-                    st.plotly_chart(
-                        fig, use_container_width=True, config=config)
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+                fig = bar_chart(**argumentos)
 
             elif chart_type == "Cajas":
                 fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
                                 color=color, fila=fila, columna=columna, indices=indices)
-                fig.update_yaxes(col=1, title=None)
+            fig.update_yaxes(col=1, title=None)
+            fig.update_xaxes(row=1, title=None)
 
-                fig.for_each_annotation(
-                    lambda a: a.update(text=a.text.split("=")[-1]))
-                fig.update_layout(height=height)
-                st.plotly_chart(fig, use_container_width=True, config=config)
+            fig.for_each_annotation(
+                lambda a: a.update(text=a.text.split("=")[-1]))
+            fig.update_layout(height=height)
+            st.plotly_chart(fig, use_container_width=True, config=config)
 
 
 def pag_habilidades(col_preguntas, columna_unica):
@@ -302,56 +256,52 @@ def pag_habilidades(col_preguntas, columna_unica):
 
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
-
-        if chart_type == "Histograma":
-            if ejex == pregunta:
+        df["Grupo"] = df["Grupo"].astype(str)
+        if len(df) == 0:
+            st.warning(
+                "El / los grupos seleccionados no tienen datos para mostrar")
+        elif (fila == "Grupo" or columna == "Grupo") and (len(df.Grupo.unique()) > 10):
+            st.warning(
+                "Por favor use los filtros para seleccionar menos grupos")
+        else:
+            if chart_type == "Histograma":
                 counts, bin_edges = np.histogram(
                     df[pregunta], bins=30, density=False)
                 hist_df = pd.DataFrame(
-                    {"Puntaje en: "+pregunta: bin_edges[:-1], "Cuenta": counts})
+                    {"Puntaje en "+pregunta: bin_edges[:-1], "Cuenta": counts})
                 histogram_df = pd.merge_asof(df.sort_values(
-                    pregunta), hist_df, left_on=pregunta, right_on="Puntaje en: "+pregunta)
+                    pregunta), hist_df, left_on=pregunta, right_on="Puntaje en "+pregunta)
                 indices.remove(pregunta)
-                indices.append("Puntaje en: "+pregunta)
+                indices.append("Puntaje en "+pregunta)
                 pivot = pivot_data(histogram_df, indices,
                                    columna_unica, "count")
-                argumentos = {"relativo": False, "columna_unica": columna_unica, "pivot": pivot, "ejex": "Puntaje en: "+pregunta, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
+                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": "Puntaje en "+pregunta, "color": color,
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
                 fig = bar_chart(**argumentos)
-            # pivot_prueba = prueba.pivot_table(
-            #    index=["Género", "Dimension"], values=columna_unica, aggfunc="count").reset_index()
-            # fig = px.bar(pivot_prueba, x="Dimension", y=columna_unica, color="Género",
-            #             title = "Histogram simulation via px.bar")
-            # argumentos = {"columna_unica": columna_unica, "pivot": df, "ejex": ejex, "color": color,
-            #             "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
-            # fig = hist_chart(**argumentos)
-        elif chart_type == "Cajas":
-            if ejex == pregunta:
-                st.warning(
-                    'Seleccione un eje X diferente para ver la grafica')
-            else:
+            elif chart_type == "Cajas":
                 fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
                                 color=color, fila=fila, columna=columna, indices=indices)
                 fig.update_yaxes(col=1, title=None)
-        elif chart_type == "Barras":
-            if ejex == pregunta:
-                st.warning(
-                    'Seleccione un eje X diferente para ver la grafica')
-            else:
+            elif chart_type == "Barras":
                 pivot = pivot_data(df, indices, pregunta, "mean")
                 argumentos = {"relativo": False, "columna_unica": pregunta, "pivot": pivot, "ejex": ejex, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders}
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "range_y": (0, 100), "label": "Puntaje promedio"}
                 fig = bar_chart(**argumentos)
+                #fig.layout.yaxis.tickformat = ',.0%'
+                fig.update_traces(textposition='outside',
+                                  texttemplate='%{text:.2f}')
 
-        elif chart_type == 'Dispersión':
-            fig = px.scatter(
-                df, y=pregunta, x='Interes en la programación')
-        if fig is not None:
-            fig.for_each_annotation(
-                lambda a: a.update(text=a.text.split("=")[-1]))
-            fig.update_layout(height=height)
-            st.plotly_chart(fig, use_container_width=True, config=config)
-            st.markdown("Nota: los puntajes obtenidos por los participantes en la evaluación de sus conocimientos en programación han sido estandarizados en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estándar es 10")
+            elif chart_type == 'Dispersión':
+                fig = px.scatter(
+                    df, y=pregunta, x='Interes en la programación')
+            if fig is not None:
+                #fig.update_yaxes(col=1, title=None)
+                fig.update_xaxes(row=1, title=None)
+                fig.for_each_annotation(
+                    lambda a: a.update(text=a.text.split("=")[-1]))
+                fig.update_layout(height=height)
+                st.plotly_chart(fig, use_container_width=True, config=config)
+                st.markdown("Nota: los puntajes obtenidos por los participantes en la evaluación de sus conocimientos en programación han sido estandarizados en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estándar es 10")
 
 
 def main():
