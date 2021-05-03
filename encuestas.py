@@ -176,7 +176,7 @@ def pag_encuestas(col_preguntas, columna_unica):
         yes_no = ["Sí", "No"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
-        dudas = ["Sobre la metodología", "Compresión de las temáticas",
+        dudas = ["Sobre la metodología", "Comprensión de las temáticas",
                  "Asociado a los retos", "Instrucciones recibidas", "No tuvo dificultades"]
         tema = ["Manejo del tiempo", "Plan de vida", "Manejo del estrés y la ansiedad",
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
@@ -185,8 +185,8 @@ def pag_encuestas(col_preguntas, columna_unica):
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
-        st.write(answers)
-        st.write((set(dudas).intersection(answers)))
+        # st.write(answers)
+        # st.write((set(dudas).intersection(answers)))
 
         if len(set(satisfaction).intersection(answers)) >= len(answers):
             cat_order = satisfaction
