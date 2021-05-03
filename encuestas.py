@@ -186,7 +186,7 @@ def pag_encuestas(col_preguntas, columna_unica):
 
         answers = set(df[pregunta])
         st.write(answers)
-        st.write(len(set(dudas).intersection(answers)) >= len(answers))
+        st.write(len(set(dudas).intersection(answers)))
 
         if len(set(satisfaction).intersection(answers)) >= len(answers):
             cat_order = satisfaction
