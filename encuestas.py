@@ -171,7 +171,7 @@ def pag_encuestas(col_preguntas, columna_unica):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
-        satisfaction = ["Nada satisfecho", "Un poco satisfecho", "Neutra",
+        satisfaction = ["Nada satisfecho", "Poco satisfecho", "Neutra",
                         "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
         yes_no = ["Sí", "No"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
