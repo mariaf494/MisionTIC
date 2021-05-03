@@ -236,7 +236,7 @@ def pag_encuestas(col_preguntas, columna_unica):
 
 
 def pag_habilidades(col_preguntas, columna_unica):
-    file = "Datos_nuevos_prueba1.xlsx"
+    file = "Datos_Pre_Misión_TIC.xlsx"
     st.write("""# Visualizaciones""")
     if file:
         fig = None
