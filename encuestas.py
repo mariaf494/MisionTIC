@@ -209,7 +209,7 @@ def pag_encuestas(col_preguntas, columna_unica):
         dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["Sobre la metodología", "Compresión de las temáticas",
-                 "Asociado a los retos", "Instrucciones recibidas"]
+                 "Asociado a los retos", "Instrucciones recibidas", "No tuvo dificultades"]
         tema = ["Manejo del tiempo", "Plan de vida", "Manejo del estrés y la ansiedad",
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora", "2 horas", "3 horas",
