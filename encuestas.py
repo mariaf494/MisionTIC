@@ -157,7 +157,7 @@ def write_init():
 
 
 def pag_encuestas(col_preguntas, columna_unica):
-    file = "Ciclo1_semana1_plataforma_.xlsx"
+    file = "Ciclo1_semana1_plataforma.xlsx"
     st.write("""# Visualizaciones""")
     if file:
         datos = load_data(file)
