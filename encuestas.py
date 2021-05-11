@@ -160,8 +160,7 @@ def write_init():
         st.image(image, caption='')
 
 
-def pag_encuestas(col_preguntas, columna_unica):
-    file = "Misión_TIC.xlsx"
+def pag_encuestas(col_preguntas, columna_unica, file):
     st.write("""# Visualizaciones""")
     if file:
         datos = load_data(file)
@@ -241,8 +240,8 @@ def pag_encuestas(col_preguntas, columna_unica):
             st.plotly_chart(fig, use_container_width=True, config=config)
 
 
-def pag_habilidades(col_preguntas, columna_unica):
-    file = "Datos_Pre_Misión_TIC.xlsx"
+def pag_habilidades(col_preguntas, columna_unica, file):
+
     st.write("""# Visualizaciones""")
     if file:
         fig = None
@@ -313,17 +312,18 @@ def pag_habilidades(col_preguntas, columna_unica):
 
 
 def main():
-    col_preguntas = 3
     columna_unica = 'ID de respuesta'
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio(
         "Página: ", ["Inicio", "Encuesta", "Habilidades en programación"])
     if pag == "Encuesta":
-        pag_encuestas(4, columna_unica)
+        pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
 
     elif pag == "Habilidades en programación":
-        pag_habilidades(col_preguntas, columna_unica)
+        pag_habilidades(3, columna_unica,
+                        "Datos_Pre_Misión_TIC.xlsx")
+
     else:
         write_init()
 
