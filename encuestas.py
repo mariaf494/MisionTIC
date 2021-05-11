@@ -33,6 +33,10 @@ def filtros_encuesta(datos, col_preguntas):
     lista_grupos = datos.Grupo.unique()
     lista_grupos.sort()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
+    lista_semanas = datos.Semana.unique()
+    lista_semanas.sort()
+    semanas = st.multiselect(
+        "Seleccione la semana de interés: ",  lista_semanas)
 
     lista_filtros.append(st.selectbox("Seleccione el eje x",
                                       ["Pregunta"] + lista_agrupadores))
@@ -46,7 +50,7 @@ def filtros_encuesta(datos, col_preguntas):
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
     indices = list(set(filtros_def).difference([None]))
-    return pregunta, filtros_def, indices, grupo
+    return pregunta, filtros_def, indices, grupo, semanas
 
 
 def filtros_habilidades(datos, col_preguntas, grafica):
@@ -157,14 +161,14 @@ def write_init():
 
 
 def pag_encuestas(col_preguntas, columna_unica):
-    file = "Semana2_Plataforma.xlsx"
+    file = "Misión_TIC.xlsx"
     st.write("""# Visualizaciones""")
     if file:
         datos = load_data(file)
         df = copy.deepcopy(datos)
         chart_type = st.radio(
             "Tipo de visualización ", ("Barras", "Cajas"))
-        pregunta, filtros_def, indices, grupo = filtros_encuesta(
+        pregunta, filtros_def, indices, grupo, semana = filtros_encuesta(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
@@ -206,6 +210,8 @@ def pag_encuestas(col_preguntas, columna_unica):
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)]}
 
+        if semana != []:
+            df = df.loc[df.Semana.isin(semana)]
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
         df["Grupo"] = df["Grupo"].astype(str)
