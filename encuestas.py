@@ -337,7 +337,7 @@ def main():
         pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
 
     elif pag == "Encuesta docentes":
-    	pag_docentes(2, columna_unica, "Docentes_sem1")
+    	pag_docentes(2, columna_unica, "Docentes_sem1.xlsx")
 
     elif pag == "Habilidades en programación":
         pag_habilidades(3, columna_unica,
