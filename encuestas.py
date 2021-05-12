@@ -323,7 +323,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
         datos = load_data(file)
         df = copy.deepcopy(datos)
         chart_type = st.radio(
-            "Tipo de visualización ", ("Barras"))
+            "Tipo de visualización ", ("Barras", "Cajas"))
         pregunta, semana = filtros_docentes(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
@@ -334,13 +334,25 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         answers = set(df[pregunta])
 
-        if chart_type == "Barras":
-             pivot = pivot_data(df, indices, columna_unica, 'count')
+        else:
+            if chart_type == "Barras":
+                pivot = pivot_data(df, indices, columna_unica, 'count')
 
-            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
                               "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
-            fig = bar_chart(**argumentos)
+                fig = bar_chart(**argumentos)
 
+            elif chart_type == "Cajas":
+                fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+                                color=color, fila=fila, columna=columna, indices=indices)
+            fig.update_yaxes(col=1, title=None)
+            fig.update_xaxes(row=1, title=None)
+
+            fig.for_each_annotation(
+                lambda a: a.update(text=a.text.split("=")[-1]))
+            fig.update_layout(height=height)
+            st.plotly_chart(fig, use_container_width=True, config=config)
+            
 def main():
     columna_unica = 'ID de respuesta'
 
