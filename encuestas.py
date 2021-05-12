@@ -323,7 +323,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
         datos = load_data(file)
         df = copy.deepcopy(datos)
         chart_type = st.radio(
-            "Tipo de visualización ", ("Barras", "Cajas"))
+            "Tipo de visualización ", ("Barras"))
         pregunta, semana = filtros_docentes(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
@@ -331,6 +331,12 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
         Si_No = ["Sí", "No"]
 
+        if chart_type == "Barras":
+             pivot = pivot_data(df, indices, columna_unica, 'count')
+
+            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+            fig = bar_chart(**argumentos)
 
 def main():
     columna_unica = 'ID de respuesta'
