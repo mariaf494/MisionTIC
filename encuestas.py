@@ -90,13 +90,13 @@ def filtros_docentes(datos, col_preguntas):
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
     lista_filtros.append(st.selectbox("Seleccione el eje x",
-                                      ["Pregunta"] + lista_agrupadores))
+                                      ["Pregunta"]))
     lista_filtros.append(st.selectbox("Dividir por color", [
-        " ", "Pregunta"] + lista_agrupadores))
+        " ", "Pregunta"]))
     lista_filtros.append(st.selectbox("Dividir por columna", [
-        " ", "Pregunta"] + lista_agrupadores))
+        " ", "Pregunta"]))
     lista_filtros.append(st.selectbox("Dividir por fila", [
-        " ", "Pregunta"] + lista_agrupadores))
+        " ", "Pregunta"]))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
