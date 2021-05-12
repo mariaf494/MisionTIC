@@ -89,6 +89,19 @@ def filtros_docentes(datos, col_preguntas, grafica):
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
 
+ lista_filtros.append(st.selectbox("Seleccione el eje x",
+                                      ["Pregunta"] + lista_agrupadores))
+    lista_filtros.append(st.selectbox("Dividir por color", [
+        " ", "Pregunta"] + lista_agrupadores))
+    lista_filtros.append(st.selectbox("Dividir por columna", [
+        " ", "Pregunta"] + lista_agrupadores))
+    lista_filtros.append(st.selectbox("Dividir por fila", [
+        " ", "Pregunta"] + lista_agrupadores))
+
+    filtros_def = [None if x == ' ' else x for x in lista_filtros]
+    filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
+    indices = list(set(filtros_def).difference([None]))
+    return pregunta, filtros_def, indices
 
 def pivot_data(datos, indices, columna_unica, aggfunc):
     return datos.pivot_table(index=indices, values=columna_unica, aggfunc=aggfunc).reset_index()
@@ -342,23 +355,23 @@ def pag_docentes(col_preguntas, columna_unica, file):
             cat_order = list(answers)
 
     
-        if chart_type == "Barras":
-            pivot = pivot_data(df, indices, columna_unica, 'count')
+	        if chart_type == "Barras":
+	            pivot = pivot_data(df, indices, columna_unica, 'count')
 
-            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                            "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
-            fig = bar_chart(**argumentos)
+	            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+	                            "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+	            fig = bar_chart(**argumentos)
 
-        elif chart_type == "Cajas":
-            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
-                                color=color, fila=fila, columna=columna, indices=indices)
-        fig.update_yaxes(col=1, title=None)
-        fig.update_xaxes(row=1, title=None)
+	        elif chart_type == "Cajas":
+	            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+	                                color=color, fila=fila, columna=columna, indices=indices)
+	        fig.update_yaxes(col=1, title=None)
+	        fig.update_xaxes(row=1, title=None)
 
-        fig.for_each_annotation(
-                lambda a: a.update(text=a.text.split("=")[-1]))
-        fig.update_layout(height=height)
-        st.plotly_chart(fig, use_container_width=True, config=config)
+	        fig.for_each_annotation(
+	                lambda a: a.update(text=a.text.split("=")[-1]))
+	        fig.update_layout(height=height)
+	        st.plotly_chart(fig, use_container_width=True, config=config)
 
 def main():
     columna_unica = 'ID de respuesta'
