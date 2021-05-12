@@ -315,7 +315,7 @@ def pag_habilidades(col_preguntas, columna_unica, file):
                 argumentos = {"relativo": False, "columna_unica": pregunta, "pivot": pivot, "ejex": ejex, "color": color,
                               "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "range_y": (0, 100), "label": "Puntaje promedio"}
                 fig = bar_chart(**argumentos)
-                #fig.layout.yaxis.tickformat = ',.0%'
+                # fig.layout.yaxis.tickformat = ',.0%'
                 fig.update_traces(textposition='outside',
                                   texttemplate='%{text:.2f}')
 
@@ -323,7 +323,7 @@ def pag_habilidades(col_preguntas, columna_unica, file):
                 fig = px.scatter(
                     df, y=pregunta, x='Interes en la programación')
             if fig is not None:
-                #fig.update_yaxes(col=1, title=None)
+                # fig.update_yaxes(col=1, title=None)
                 fig.update_xaxes(row=1, title=None)
                 fig.for_each_annotation(
                     lambda a: a.update(text=a.text.split("=")[-1]))
@@ -356,16 +356,16 @@ def pag_docentes(col_preguntas, columna_unica, file):
         else:
             cat_order = list(answers)
 
-               if chart_type == "Barras":
-                    pivot = pivot_data(df, indices, columna_unica, 'count')
+            if chart_type == "Barras":
+                pivot = pivot_data(df, indices, columna_unica, 'count')
 
-                    argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                                  "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
-                    fig = bar_chart(**argumentos)
+                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+                fig = bar_chart(**argumentos)
 
-                elif chart_type == "Cajas":
-                    fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
-                                    color=color, fila=fila, columna=columna, indices=indices)
+            elif chart_type == "Cajas":
+                fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+                                color=color, fila=fila, columna=columna, indices=indices)
                 fig.update_yaxes(col=1, title=None)
                 fig.update_xaxes(row=1, title=None)
 
@@ -380,7 +380,7 @@ def main():
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio(
-        "Página: ", ["Inicio", "Encuesta estudiantes", "Encuesta docentes" , "Habilidades en programación"])
+        "Página: ", ["Inicio", "Encuesta estudiantes", "Encuesta docentes", "Habilidades en programación"])
     if pag == "Encuesta estudiantes":
         pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
 
