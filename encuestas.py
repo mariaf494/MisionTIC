@@ -330,13 +330,6 @@ def pag_docentes(col_preguntas, columna_unica, file):
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
         Si_No = ["Sí", "No"]
-        else:
-            if chart_type == "Barras":
-                pivot = pivot_data(df, indices, columna_unica, 'count')
-
-                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
-                fig = bar_chart(**argumentos)
 
 
 def main():
