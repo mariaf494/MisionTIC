@@ -341,7 +341,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Tipo de visualización ", ("Barras", "Cajas"))
         pregunta = filtros_docentes(
             df, col_preguntas)
-        ejex, color, columna, fila = filtros_def
+        	ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 50, 100)
 
