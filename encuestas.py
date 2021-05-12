@@ -329,6 +329,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
+        
         Si_No = ["Sí", "No"]
         
         df[pregunta] = df[pregunta].astype(str)
