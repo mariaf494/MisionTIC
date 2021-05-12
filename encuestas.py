@@ -83,6 +83,12 @@ def filtros_habilidades(datos, col_preguntas, grafica):
     indices = list(set(filtros_def).difference([None]))
     return pregunta, filtros_def, indices, grupo
 
+def filtros_docentes(datos, col_preguntas, grafica):
+    # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
+    lista_filtros = []
+    lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
+    pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
+
 
 def pivot_data(datos, indices, columna_unica, aggfunc):
     return datos.pivot_table(index=indices, values=columna_unica, aggfunc=aggfunc).reset_index()
@@ -318,13 +324,19 @@ def pag_docentes(col_preguntas, columna_unica, file):
         df = copy.deepcopy(datos)
         chart_type = st.radio(
             "Tipo de visualización ", ("Barras", "Cajas"))
-        pregunta, semana = filtros_encuesta(
+        pregunta, semana = filtros_docentes(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
         Si_No = ["Sí", "No"]
+        else:
+            if chart_type == "Barras":
+                pivot = pivot_data(df, indices, columna_unica, 'count')
 
+                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+                fig = bar_chart(**argumentos)
 
 
 def main():
