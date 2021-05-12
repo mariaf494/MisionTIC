@@ -318,7 +318,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
         df = copy.deepcopy(datos)
         chart_type = st.radio(
             "Tipo de visualización ", ("Barras", "Cajas"))
-        pregunta, filtros_def, indices, semana = filtros_encuesta(
+        pregunta, semana = filtros_encuesta(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
         height = st.slider(
