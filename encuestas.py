@@ -83,13 +83,13 @@ def filtros_habilidades(datos, col_preguntas, grafica):
     indices = list(set(filtros_def).difference([None]))
     return pregunta, filtros_def, indices, grupo
 
+
 def filtros_docentes(datos, col_preguntas, grafica):
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_filtros = []
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
-
- lista_filtros.append(st.selectbox("Seleccione el eje x",
+    lista_filtros.append(st.selectbox("Seleccione el eje x",
                                       ["Pregunta"] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por color", [
         " ", "Pregunta"] + lista_agrupadores))
@@ -102,6 +102,7 @@ def filtros_docentes(datos, col_preguntas, grafica):
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
     indices = list(set(filtros_def).difference([None]))
     return pregunta, filtros_def, indices
+
 
 def pivot_data(datos, indices, columna_unica, aggfunc):
     return datos.pivot_table(index=indices, values=columna_unica, aggfunc=aggfunc).reset_index()
@@ -330,6 +331,7 @@ def pag_habilidades(col_preguntas, columna_unica, file):
                 st.plotly_chart(fig, use_container_width=True, config=config)
                 st.markdown("Nota: los puntajes obtenidos por los participantes en la evaluación de sus conocimientos en programación han sido estandarizados en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estándar es 10")
 
+
 def pag_docentes(col_preguntas, columna_unica, file):
     st.write("""# Visualizaciones""")
     if file:
@@ -342,9 +344,9 @@ def pag_docentes(col_preguntas, columna_unica, file):
         ejex, color, columna, fila = filtros_def
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
-        
+
         Si_No = ["Sí", "No"]
-        
+
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
@@ -354,36 +356,36 @@ def pag_docentes(col_preguntas, columna_unica, file):
         else:
             cat_order = list(answers)
 
-    
-	        if chart_type == "Barras":
-	            pivot = pivot_data(df, indices, columna_unica, 'count')
+               if chart_type == "Barras":
+                    pivot = pivot_data(df, indices, columna_unica, 'count')
 
-	            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-	                            "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
-	            fig = bar_chart(**argumentos)
+                    argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                                  "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+                    fig = bar_chart(**argumentos)
 
-	        elif chart_type == "Cajas":
-	            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
-	                                color=color, fila=fila, columna=columna, indices=indices)
-	        fig.update_yaxes(col=1, title=None)
-	        fig.update_xaxes(row=1, title=None)
+                elif chart_type == "Cajas":
+                    fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+                                    color=color, fila=fila, columna=columna, indices=indices)
+                fig.update_yaxes(col=1, title=None)
+                fig.update_xaxes(row=1, title=None)
 
-	        fig.for_each_annotation(
-	                lambda a: a.update(text=a.text.split("=")[-1]))
-	        fig.update_layout(height=height)
-	        st.plotly_chart(fig, use_container_width=True, config=config)
+                fig.for_each_annotation(
+                    lambda a: a.update(text=a.text.split("=")[-1]))
+                fig.update_layout(height=height)
+                st.plotly_chart(fig, use_container_width=True, config=config)
+
 
 def main():
     columna_unica = 'ID de respuesta'
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio(
-        "Página: ", ["Inicio", "Encuesta estudiantes", "Encuesta docentes" ,"Habilidades en programación"])
+        "Página: ", ["Inicio", "Encuesta estudiantes", "Encuesta docentes" , "Habilidades en programación"])
     if pag == "Encuesta estudiantes":
         pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
 
     elif pag == "Encuesta docentes":
-    	pag_docentes(2, columna_unica, "Docentes_sem1.xlsx")
+        pag_docentes(2, columna_unica, "Docentes_sem1.xlsx")
 
     elif pag == "Habilidades en programación":
         pag_habilidades(3, columna_unica,
