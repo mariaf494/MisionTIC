@@ -335,27 +335,29 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         answers = set(df[pregunta])
 
-        elif len(set(Si_No).intersection(answers)) >= len(answers):
+        if len(set(Si_No).intersection(answers)) >= len(answers):
             cat_order = Si_No
-
         else:
-            if chart_type == "Barras":
-                pivot = pivot_data(df, indices, columna_unica, 'count')
+            cat_order = list(answers)
 
-                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
-                fig = bar_chart(**argumentos)
+    
+        if chart_type == "Barras":
+            pivot = pivot_data(df, indices, columna_unica, 'count')
 
-            elif chart_type == "Cajas":
-                fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                            "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+            fig = bar_chart(**argumentos)
+
+        elif chart_type == "Cajas":
+            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
                                 color=color, fila=fila, columna=columna, indices=indices)
-            fig.update_yaxes(col=1, title=None)
-            fig.update_xaxes(row=1, title=None)
+        fig.update_yaxes(col=1, title=None)
+        fig.update_xaxes(row=1, title=None)
 
-            fig.for_each_annotation(
+        fig.for_each_annotation(
                 lambda a: a.update(text=a.text.split("=")[-1]))
-            fig.update_layout(height=height)
-            st.plotly_chart(fig, use_container_width=True, config=config)
+        fig.update_layout(height=height)
+        st.plotly_chart(fig, use_container_width=True, config=config)
 
 def main():
     columna_unica = 'ID de respuesta'
