@@ -332,7 +332,7 @@ def main():
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio(
-        "Página: ", ["Inicio", "Encuesta estudiantes", "Habilidades en programación"])
+        "Página: ", ["Inicio", "Encuesta estudiantes", "Encuesta docentes" "Habilidades en programación"])
     if pag == "Encuesta estudiantes":
         pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
 
