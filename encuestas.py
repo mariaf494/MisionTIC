@@ -330,9 +330,13 @@ def pag_docentes(col_preguntas, columna_unica, file):
         height = st.slider(
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
         Si_No = ["Sí", "No"]
+        
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
+
+        elif len(set(Si_No).intersection(answers)) >= len(answers):
+            cat_order = Si_No
 
         else:
             if chart_type == "Barras":
@@ -352,7 +356,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
                 lambda a: a.update(text=a.text.split("=")[-1]))
             fig.update_layout(height=height)
             st.plotly_chart(fig, use_container_width=True, config=config)
-            
+
 def main():
     columna_unica = 'ID de respuesta'
 
