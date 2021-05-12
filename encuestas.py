@@ -185,6 +185,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
+        semana = ["Ciclo1-Sem1", "Ciclo1-Sem2", "Ciclo1-Sem3", "Ciclo1-Sem4"]
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
@@ -310,15 +311,33 @@ def pag_habilidades(col_preguntas, columna_unica, file):
                 st.plotly_chart(fig, use_container_width=True, config=config)
                 st.markdown("Nota: los puntajes obtenidos por los participantes en la evaluación de sus conocimientos en programación han sido estandarizados en una escala de puntuaciones de 0 a 100, donde la media de los datos es 50 y la desviación estándar es 10")
 
+def pag_docentes(col_preguntas, columna_unica, file):
+    st.write("""# Visualizaciones""")
+    if file:
+        datos = load_data(file)
+        df = copy.deepcopy(datos)
+        chart_type = st.radio(
+            "Tipo de visualización ", ("Barras", "Cajas"))
+        pregunta, filtros_def, indices, grupo, semana = filtros_encuesta(
+            df, col_preguntas)
+        ejex, color, columna, fila = filtros_def
+        height = st.slider(
+            "Ajuste el tamaño vertical de la gráfica", 500, 1000)
+        Si_No = ["Sí", "No"]
+
+
 
 def main():
     columna_unica = 'ID de respuesta'
 
     st.sidebar.title("Misión TIC")
     pag = st.sidebar.radio(
-        "Página: ", ["Inicio", "Encuesta", "Habilidades en programación"])
-    if pag == "Encuesta":
+        "Página: ", ["Inicio", "Encuesta estudiantes", "Habilidades en programación"])
+    if pag == "Encuesta estudiantes":
         pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
+
+    elif pag == "Encuesta docentes":
+    	pag_docentes(2, columna_unica, "Docentes_sem1")
 
     elif pag == "Habilidades en programación":
         pag_habilidades(3, columna_unica,
