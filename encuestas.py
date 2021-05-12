@@ -342,37 +342,39 @@ def pag_docentes(col_preguntas, columna_unica, file):
         pregunta, filtros_def, indices = filtros_docentes(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
-        height = st.slider(
-            "Ajuste el tamaño vertical de la gráfica", 50, 100)
+        height_d = st.slider(
+            "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         Si_No = ["Sí", "No"]
 
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
+        # st.write(answers)
 
         if len(set(Si_No).intersection(answers)) >= len(answers):
             cat_order = Si_No
         else:
             cat_order = list(answers)
 
-            if chart_type == "Barras":
-                pivot = pivot_data(df, indices, columna_unica, 'count')
+        if chart_type == "Barras":
+            pivot = pivot_data(df, indices, columna_unica, 'count')
+            # st.write(pivot)
 
-                argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": cat_order, "label": "Cuenta"}
-                fig = bar_chart(**argumentos)
+            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+                          "fila": fila, "columna": columna, "indices": indices, "category_orders": cat_order, "label": "Cuenta"}
+            fig = bar_chart(**argumentos)
 
-            elif chart_type == "Cajas":
-                fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
-                                color=color, fila=fila, columna=columna, indices=indices)
-                fig.update_yaxes(col=1, title=None)
-                fig.update_xaxes(row=1, title=None)
+        elif chart_type == "Cajas":
+            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+                            color=color, fila=fila, columna=columna, indices=indices)
+            fig.update_yaxes(col=1, title=None)
+            fig.update_xaxes(row=1, title=None)
 
-                fig.for_each_annotation(
-                    lambda a: a.update(text=a.text.split("=")[-1]))
-                fig.update_layout(height=height)
-                st.plotly_chart(fig, use_container_width=True, config=config)
+        fig.for_each_annotation(
+            lambda a: a.update(text=a.text.split("=")[-1]))
+        fig.update_layout(height=height_d)
+        st.plotly_chart(fig, use_container_width=True, config=config)
 
 
 def main():
