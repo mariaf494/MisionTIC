@@ -84,7 +84,7 @@ def filtros_habilidades(datos, col_preguntas, grafica):
     return pregunta, filtros_def, indices, grupo
 
 
-def filtros_docentes(datos, col_preguntas, grafica):
+def filtros_docentes(datos, col_preguntas):
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_filtros = []
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
