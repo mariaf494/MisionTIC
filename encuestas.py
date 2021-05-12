@@ -101,7 +101,7 @@ def filtros_docentes(datos, col_preguntas):
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
     indices = list(set(filtros_def).difference([None]))
-    return pregunta, filtros_def, indices
+    return pregunta, filtros_def
 
 
 def pivot_data(datos, indices, columna_unica, aggfunc):
