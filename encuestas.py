@@ -347,7 +347,6 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         Si_No = ["Sí", "No"]
         Num = ["1","2", "3", "4", "5", "6", "7", "8", "9", "10"]
-
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
@@ -355,6 +354,8 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         if len(set(Si_No).intersection(answers)) >= len(answers):
             cat_order = Si_No
+        elif len(set(Num).intersection(answers)) >= len(answers):
+            cat_order = Num
         else:
             cat_order = list(answers)
 
