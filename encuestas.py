@@ -238,7 +238,8 @@ def main():
             tema = ["Manejo del tiempo", "Plan de vida", "Manejo del estrés y la ansiedad",
                     "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
             tiempo = ["1 hora", "2 horas", "3 horas",
-                      "4 horas", "5 horas", "Más de 5 horas"]
+                     "4 horas", "5 horas", "Más de 5 horas"]
+            CEDU = ["Totalmente en desacuerod", "En desacuerdo" ,"Neutra" ,"De acuerdo" ,"Totalmente de acuerdo"] 
 
             df[pregunta] = df[pregunta].astype(str)
 
