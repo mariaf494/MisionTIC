@@ -346,6 +346,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         Si_No = ["Sí", "No"]
+        Num = ["1","2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
         df[pregunta] = df[pregunta].astype(str)
 
