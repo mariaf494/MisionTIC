@@ -211,7 +211,7 @@ def main():
     pag = st.sidebar.radio(
         "Página: ", ["Inicio", "Encuesta", "Habilidades en programación"])
     if pag == "Encuesta":
-        file = "Percepción_clases_bimodales.xlsx"
+        file = "docentes_borrador.xlsx"
         st.write("""# Visualizaciones""")
         if file:
             datos = load_data(file)
