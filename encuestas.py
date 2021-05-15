@@ -346,25 +346,32 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         Si_No = ["Sí", "No"]
-        Num = ["1","2", "3", "4", "5", "6", "7", "8", "9", "10"]
-        df[pregunta] = df[pregunta].astype(str)
+        Num = [str(x) for x in range(1, 11)]
+        try:
+            df[pregunta] = df[pregunta].fillna(
+                '0').astype(int).astype(str).replace("0", "")
+        except:
+            df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
-        # st.write(answers)
+        st.write(answers)
 
         if len(set(Si_No).intersection(answers)) >= len(answers):
             cat_order = Si_No
-        elif len(set(Num).intersection(answers)) >= len(answers):
+        elif len(set(Num).intersection(answers)) >= 2:
             cat_order = Num
         else:
             cat_order = list(answers)
 
+        category_orders = {pregunta: cat_order,
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)]}
+
         if chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
-            # st.write(pivot)
+            st.write(cat_order)
 
             argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                          "fila": fila, "columna": columna, "indices": indices, "category_orders": cat_order, "label": "Cuenta"}
+                          "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
             fig = bar_chart(**argumentos)
 
         elif chart_type == "Cajas":
