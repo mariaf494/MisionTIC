@@ -354,7 +354,6 @@ def pag_docentes(col_preguntas, columna_unica, file):
             df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
-        st.write(answers)
 
         if len(set(Si_No).intersection(answers)) >= len(answers):
             cat_order = Si_No
