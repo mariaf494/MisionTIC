@@ -108,7 +108,7 @@ def pivot_data(datos, indices, columna_unica, aggfunc):
     return datos.pivot_table(index=indices, values=columna_unica, aggfunc=aggfunc).reset_index()
 
 
-def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None, range_y=None, label=""):
+def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, indices=None, category_orders=None, range_y=None, range_x=None, label=""):
     if columna_total == "Total":
         total = pivot[columna_unica].sum()
         pivot['Frecuencia'] = pivot[columna_unica] / total
@@ -119,16 +119,17 @@ def relative_bar_chart(columna_total=None, columna_unica=None, pivot=None, ejex=
         pivot['Frecuencia'] = pivot[columna_unica] / pivot["TOTAL"]
     fig = px.bar(pivot, x=ejex, y="Frecuencia", color=color, facet_row=fila, facet_col=columna, barmode="group",
                  color_discrete_sequence=px.colors.qualitative.Pastel, text="Frecuencia", facet_col_wrap=4, category_orders=category_orders, range_y=range_y, labels={"Frecuenca": label})
-
+    fig.update_layout(legend=dict(orientation="h", yanchor="bottom",
+                                  y=1.02, xanchor="right", x=1), xaxis={'type': 'category', 'range': range_x}, template="simple_white")
     return fig
 
 
-def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None, range_y=None, label=""):
+def absolute_bar_chart(columna_unica=None, pivot=None, ejex=None, color=None, fila=None, columna=None, category_orders=None, indices=None, range_y=None, range_x=None, label=""):
     fig = px.bar(pivot, x=ejex, y=columna_unica, color=color, facet_row=fila, facet_col=columna, barmode="group",
                  color_discrete_sequence=px.colors.qualitative.Pastel, text=columna_unica, facet_col_wrap=4, category_orders=category_orders,
                  labels={columna_unica: label}, range_y=range_y, title=ejex)
     fig.update_layout(legend=dict(orientation="h", yanchor="bottom",
-                                  y=1.02, xanchor="right", x=1), template="simple_white")
+                                  y=1.02, xanchor="right", x=1), xaxis={'type': 'category', 'range': range_x}, template="simple_white")
     return fig
 
 
@@ -244,9 +245,8 @@ def pag_encuestas(col_preguntas, columna_unica, file):
         else:
             if chart_type == "Barras":
                 pivot = pivot_data(df, indices, columna_unica, 'count')
-
                 argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+                              "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta", "range_x": (1, len(cat_order))}
                 fig = bar_chart(**argumentos)
 
             elif chart_type == "Cajas":
@@ -368,8 +368,9 @@ def pag_docentes(col_preguntas, columna_unica, file):
         if chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
 
+            st.write("holi", len(cat_order))
             argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
-                          "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
+                          "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta", "range_x": (-1, len(cat_order))}
             fig = bar_chart(**argumentos)
 
         elif chart_type == "Cajas":
