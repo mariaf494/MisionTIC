@@ -367,7 +367,6 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         if chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
-            st.write(cat_order)
 
             argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
                           "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta"}
