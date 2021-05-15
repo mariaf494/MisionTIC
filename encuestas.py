@@ -333,7 +333,7 @@ def pag_habilidades(col_preguntas, columna_unica, file):
 
 
 def pag_docentes(col_preguntas, columna_unica, file):
-    st.write("""# Visualizaciones""")
+    st.write("""# Visualizaciones Interactivas""")
     if file:
         datos = load_data(file)
         df = copy.deepcopy(datos)
