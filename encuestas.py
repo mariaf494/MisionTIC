@@ -206,7 +206,8 @@ def pag_encuestas(col_preguntas, columna_unica, file):
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
-        semana = ["Ciclo1-Sem1", "Ciclo1-Sem2", "Ciclo1-Sem3", "Ciclo1-Sem4"]
+        orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
+                        "Ciclo1-Sem3", "Ciclo1-Sem4"]
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
@@ -229,7 +230,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
             cat_order = list(answers)
 
         category_orders = {pregunta: cat_order,
-                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)]}
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
 
         if semana != []:
             df = df.loc[df.Semana.isin(semana)]
