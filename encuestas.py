@@ -392,7 +392,7 @@ def main():
     pag = st.sidebar.radio(
         "Página: ", ["Inicio", "Encuesta estudiantes", "Encuesta docentes", "Habilidades en programación"])
     if pag == "Encuesta estudiantes":
-        pag_encuestas(4, columna_unica, "Misión_TIC.xlsx")
+        pag_encuestas(4, columna_unica, "Misión_TIC_3.xlsx")
 
     elif pag == "Encuesta docentes":
         pag_docentes(2, columna_unica, "Docentes_sem1.xlsx")
