@@ -229,7 +229,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
             cat_order = list(answers)
 
         category_orders = {pregunta: cat_order,
-                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo" , "Semana": [str(x) for x in range(1, 92)]}
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": ["Ciclo1-Sem1", "Ciclo1-Sem2", "Ciclo1-Sem3", "Ciclo1-Sem4"]}
 
         if semana != []:
             df = df.loc[df.Semana.isin(semana)]
