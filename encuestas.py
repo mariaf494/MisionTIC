@@ -30,7 +30,7 @@ def filtros_encuesta(datos, col_preguntas):
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
-    lista_grupos = datos.Grupo.unique()
+    lista_grupos = datos.Grupo.unique()  
     lista_grupos.sort()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
     lista_semanas = datos.Semana.unique()
