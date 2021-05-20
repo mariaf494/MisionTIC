@@ -371,9 +371,6 @@ def pag_docentes(col_preguntas, columna_unica, file):
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
 
-        if semana != []:
-        df = df.loc[df.Semana.isin(semana)]
-
        	elif chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
 
