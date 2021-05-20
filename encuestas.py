@@ -351,6 +351,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         Si_No = ["Sí", "No"]
+        orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2", "Ciclo1-Sem3", "Ciclo1-Sem4"]
         Num = [str(x) for x in range(1, 11)]
         try:
             df[pregunta] = df[pregunta].fillna(
