@@ -344,7 +344,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
         df = copy.deepcopy(datos)
         chart_type = st.radio(
             "Tipo de visualización ", ("Barras", "Cajas"))
-        pregunta, filtros_def, indices, semanas = filtros_docentes(
+        pregunta, filtros_def, indices, semana = filtros_docentes(
             df, col_preguntas)
         ejex, color, columna, fila = filtros_def
         height_d = st.slider(
@@ -368,7 +368,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
             cat_order = list(answers)
 
         category_orders = {pregunta: cat_order,
-                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)]}
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
 
         if chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
