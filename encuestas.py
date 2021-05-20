@@ -371,7 +371,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
 
-       	elif chart_type == "Barras":
+       	if chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
 
             #st.write("holi", len(cat_order))
@@ -379,7 +379,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
                           "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta", "range_x": (-1, len(cat_order)+1)}
             fig = bar_chart(**argumentos)
 
-        else chart_type == "Cajas":
+        elif chart_type == "Cajas":
             fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
                             color=color, fila=fila, columna=columna, indices=indices)
             fig.update_yaxes(col=1, title=None)
