@@ -371,24 +371,27 @@ def pag_docentes(col_preguntas, columna_unica, file):
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
 
-        if chart_type == "Barras":
-            pivot = pivot_data(df, indices, columna_unica, 'count')
+        if semana != []:
+        df = df.loc[df.Semana.isin(semana)]
+
+       	    elif chart_type == "Barras":
+            	pivot = pivot_data(df, indices, columna_unica, 'count')
 
             #st.write("holi", len(cat_order))
-            argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
+            	argumentos = {"relativo": True, "columna_unica": columna_unica, "pivot": pivot, "ejex": ejex, "color": color,
                           "fila": fila, "columna": columna, "indices": indices, "category_orders": category_orders, "label": "Cuenta", "range_x": (-1, len(cat_order)+1)}
-            fig = bar_chart(**argumentos)
+            	fig = bar_chart(**argumentos)
 
-        elif chart_type == "Cajas":
-            fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
+            else chart_type == "Cajas":
+            	fig = box_chart(columna_unica=pregunta, pivot=df, ejex=ejex,
                             color=color, fila=fila, columna=columna, indices=indices)
-            fig.update_yaxes(col=1, title=None)
-            fig.update_xaxes(row=1, title=None)
+            	fig.update_yaxes(col=1, title=None)
+            	fig.update_xaxes(row=1, title=None)
 
-        fig.for_each_annotation(
+        	fig.for_each_annotation(
             lambda a: a.update(text=a.text.split("=")[-1]))
-        fig.update_layout(height=height_d)
-        st.plotly_chart(fig, use_container_width=True, config=config)
+        	fig.update_layout(height=height_d)
+        	st.plotly_chart(fig, use_container_width=True, config=config)
 
 
 def main():
