@@ -87,6 +87,7 @@ def filtros_habilidades(datos, col_preguntas, grafica):
 def filtros_docentes(datos, col_preguntas):
     # col_preguntas = int(st.number_input('Ingrese un número', 1,50,5))
     lista_filtros = []
+    lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
     lista_semanas = datos.Semana.unique()
@@ -94,14 +95,14 @@ def filtros_docentes(datos, col_preguntas):
     semanas = st.multiselect(
         "Seleccione la semana de interés: ",  lista_semanas)
     lista_filtros.append(st.selectbox("Seleccione el eje x",
-                                      ["Pregunta"]))
+                                      ["Pregunta"]+lista_agrupadores))
 
     lista_filtros.append(st.selectbox("Dividir por color", [
-        " ", "Pregunta"]))
+        " ", "Pregunta"]+lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por columna", [
-        " ", "Pregunta"]))
+        " ", "Pregunta"]+lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por fila", [
-        " ", "Pregunta"]))
+        " ", "Pregunta"]+lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
