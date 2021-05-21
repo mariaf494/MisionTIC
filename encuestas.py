@@ -30,7 +30,7 @@ def filtros_encuesta(datos, col_preguntas):
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
     lista_agrupadores = list(datos.iloc[:, 1:col_preguntas].columns)
-    lista_grupos = datos.Grupo.unique()  
+    lista_grupos = datos.Grupo.unique()
     lista_grupos.sort()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
     lista_semanas = datos.Semana.unique()
@@ -89,18 +89,19 @@ def filtros_docentes(datos, col_preguntas):
     lista_filtros = []
     lista_preguntas = list(datos.iloc[:, col_preguntas:].columns)
     pregunta = st.selectbox("Seleccione la pregunta: ", lista_preguntas)
+    lista_semanas = datos.Semana.unique()
+    lista_semanas.sort()
+    semanas = st.multiselect(
+        "Seleccione la semana de interés: ",  lista_semanas)
     lista_filtros.append(st.selectbox("Seleccione el eje x",
                                       ["Pregunta"]))
+
     lista_filtros.append(st.selectbox("Dividir por color", [
         " ", "Pregunta"]))
     lista_filtros.append(st.selectbox("Dividir por columna", [
         " ", "Pregunta"]))
     lista_filtros.append(st.selectbox("Dividir por fila", [
         " ", "Pregunta"]))
-    lista_semanas = datos.Semana.unique()
-    lista_semanas.sort()
-    semanas = st.multiselect(
-        "Seleccione la semana de interés: ",  lista_semanas)
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Pregunta" else x for x in filtros_def]
@@ -240,6 +241,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
             df = df.loc[df.Semana.isin(semana)]
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
+
         df["Grupo"] = df["Grupo"].astype(str)
         if len(df) == 0:
             st.warning(
@@ -351,8 +353,10 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         Si_No = ["Sí", "No"]
-        orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2", "Ciclo1-Sem3", "Ciclo1-Sem4"]
+        orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
+                        "Ciclo1-Sem3", "Ciclo1-Sem4"]
         Num = [str(x) for x in range(1, 11)]
+
         try:
             df[pregunta] = df[pregunta].fillna(
                 '0').astype(int).astype(str).replace("0", "")
@@ -371,7 +375,10 @@ def pag_docentes(col_preguntas, columna_unica, file):
         category_orders = {pregunta: cat_order,
                            "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
 
-       	if chart_type == "Barras":
+        if semana != []:
+            df = df.loc[df.Semana.isin(semana)]
+
+        if chart_type == "Barras":
             pivot = pivot_data(df, indices, columna_unica, 'count')
 
             #st.write("holi", len(cat_order))
@@ -386,7 +393,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
             fig.update_xaxes(row=1, title=None)
 
         fig.for_each_annotation(
-        lambda a: a.update(text=a.text.split("=")[-1]))
+            lambda a: a.update(text=a.text.split("=")[-1]))
         fig.update_layout(height=height_d)
         st.plotly_chart(fig, use_container_width=True, config=config)
 
