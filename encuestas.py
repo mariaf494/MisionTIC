@@ -214,6 +214,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
                   "4 horas", "5 horas", "Más de 5 horas"]
         orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
                         "Ciclo1-Sem3", "Ciclo1-Sem4"]
+        nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto"]
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
