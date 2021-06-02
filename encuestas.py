@@ -213,7 +213,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
         orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
-                        "Ciclo1-Sem3", "Ciclo1-Sem4"]
+                        "Ciclo1-Sem3", "Ciclo1-Sem4" , "Ciclo1-Sem5" , "Ciclo1-Sem6" , "Ciclo1-Sem7"]
         nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fui incluida posteriormente"]
         df[pregunta] = df[pregunta].astype(str)
 
@@ -356,7 +356,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         Si_No = ["Sí", "No"]
         orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
-                        "Ciclo1-Sem3", "Ciclo1-Sem4"]
+                        "Ciclo1-Sem3", "Ciclo1-Sem4" , "Ciclo1-Sem5"]
         Num = [str(x) for x in range(1, 11)]
 
         try:
@@ -375,7 +375,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
             cat_order = list(answers)
 
         category_orders = {pregunta: cat_order,
-                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(0, 92)], "Semana": orden_semana}
 
         if semana != []:
             df = df.loc[df.Semana.isin(semana)]
