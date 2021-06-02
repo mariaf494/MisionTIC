@@ -212,8 +212,8 @@ def pag_encuestas(col_preguntas, columna_unica, file):
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
-        orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
-                        "Ciclo1-Sem3", "Ciclo1-Sem4" , "Ciclo1-Sem5" , "Ciclo1-Sem6" , "Ciclo1-Sem7"]
+        orden_semana = ["C1-Sem1", "C1-Sem2",
+                        "C1-Sem3", "C1-Sem4" , "C1-Sem5" , "C1-Sem6" , "C1-Sem7"]
         nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fui incluida posteriormente"]
         df[pregunta] = df[pregunta].astype(str)
 
@@ -355,8 +355,8 @@ def pag_docentes(col_preguntas, columna_unica, file):
             "Ajuste el tamaño vertical de la gráfica", 500, 1000)
 
         Si_No = ["Sí", "No"]
-        orden_semana = ["Ciclo1-Sem1", "Ciclo1-Sem2",
-                        "Ciclo1-Sem3", "Ciclo1-Sem4" , "Ciclo1-Sem5"]
+        orden_semana = ["C1-Sem1", "C1-Sem2",
+                        "C1-Sem3", "C1-Sem4" , "C1-Sem5"]
         Num = [str(x) for x in range(1, 11)]
 
         try:
