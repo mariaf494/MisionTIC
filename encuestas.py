@@ -203,7 +203,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Poco satisfecho", "Neutra",
                         "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
-        yes_no = ["Sí", "No"]
+        yes_no = ["Sí", "No" , "La pregunta fue incluida posteriormente"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["No tuvo dificultades", "Sobre la metodología", "Comprensión de las temáticas",
@@ -214,7 +214,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
                   "4 horas", "5 horas", "Más de 5 horas"]
         orden_semana = ["C1-Sem1", "C1-Sem2",
                         "C1-Sem3", "C1-Sem4" , "C1-Sem5" , "C1-Sem6" , "C1-Sem7"]
-        nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fui incluida posteriormente"]
+        nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fue incluida posteriormente"]
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
