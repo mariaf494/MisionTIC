@@ -233,6 +233,8 @@ def pag_encuestas(col_preguntas, columna_unica, file):
             cat_order = tema
         elif len(set(tiempo).intersection(answers)) >= len(answers):
             cat_order = tiempo
+        elif len(set(nivel).intersection(answers)) >= len(answers):
+            cat_order = nivel
         else:
             cat_order = list(answers)
 
