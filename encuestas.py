@@ -202,7 +202,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
 
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Poco satisfecho", "Neutra",
-                        "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado"]
+                        "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado" , "La pregunta fue incluida posteriormente"]
         yes_no = ["Sí", "No" , "La pregunta fue incluida posteriormente"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
