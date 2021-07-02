@@ -212,8 +212,8 @@ def pag_encuestas(col_preguntas, columna_unica, file):
                 "Estrategias para trabajar en grupo", "Establecimiento y cumplimiento de objetivos"]
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
-        orden_semana = ["C1-Sem1", "C1-Sem2",
-                        "C1-Sem3", "C1-Sem4" , "C1-Sem5" , "C1-Sem6" , "C1-Sem7"]
+        orden_semana = ["C1-S1", "C1-S2",
+                        "C1-S3", "C1-S4" , "C1-S5" , "C1-S6" , "C1-S7"]
         nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fue incluida posteriormente"]
         df[pregunta] = df[pregunta].astype(str)
 
