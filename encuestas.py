@@ -415,7 +415,7 @@ def main():
         pag_docentes(2, columna_unica, "Docentes_sem1.xlsx")
 
     elif pag == "Habilidades en programación":
-        pag_habilidades(3, columna_unica,
+        pag_habilidades(4, columna_unica,
                         "EvaluaciónCiclo1.xlsx")
 
     else:
