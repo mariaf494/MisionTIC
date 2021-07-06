@@ -62,7 +62,7 @@ def filtros_habilidades(datos, col_preguntas, grafica):
     lista_grupos = datos.Grupo.unique()
     grupo = st.multiselect("Seleccione el grupo: ",  lista_grupos)
     lista_instrumentos = datos.Instrumento.unique()
-    Instrumento = st.multiselect("Seleccione el instrumento de insterés: " , lista_instrumentos)
+    Instrumento = st.multiselect("Seleccione el instrumento de interés: " , lista_instrumentos)
 
     if grafica == 'Histograma':
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
