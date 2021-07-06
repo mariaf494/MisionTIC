@@ -70,16 +70,16 @@ def filtros_habilidades(datos, col_preguntas, grafica):
                              "Dimensión"]))
     elif grafica == "Cajas" or grafica == "Barras":
         lista_filtros.append(st.selectbox(
-            "Seleccione el eje x", lista_agrupadores , lista_instrumento))
+            "Seleccione el eje x", lista_agrupadores))
     else:
         lista_filtros.append(st.selectbox("Seleccione el eje x", [
-                             "Dimensión"] + lista_agrupadores + lista_instrumento))
+                             "Dimensión"] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por color", [
-        " "] + lista_agrupadores + lista_instrumento))
+        " "] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por columna", [
-        " "] + lista_agrupadores + lista_instrumento))
+        " "] + lista_agrupadores))
     lista_filtros.append(st.selectbox("Dividir por fila", [
-        " "] + lista_agrupadores + lista_instrumento))
+        " "] + lista_agrupadores))
 
     filtros_def = [None if x == ' ' else x for x in lista_filtros]
     filtros_def = [pregunta if x == "Dimensión" else x for x in filtros_def]
