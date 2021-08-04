@@ -205,8 +205,8 @@ def pag_encuestas(col_preguntas, columna_unica, file):
 
         # YA TENEMOS QUE MODIFICAR LOS ORDENES AQUÍ
         satisfaction = ["Nada satisfecho", "Poco satisfecho", "Neutra",
-                        "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado" , "La pregunta fue incluida posteriormente"]
-        yes_no = ["Sí", "No" , "La pregunta fue incluida posteriormente"]
+                        "Muy satisfecho", "Totalmente satisfecho", "No puedo asistir/ No lo he usado", "La pregunta fue incluida posteriormente"]
+        yes_no = ["Sí", "No", "La pregunta fue incluida posteriormente"]
         dificultad = ["No tuvo dificultades", "Muy bajo",
                       "Bajo", "Intermedio", "Alto", "Muy alto"]
         dudas = ["No tuvo dificultades", "Sobre la metodología", "Comprensión de las temáticas",
@@ -216,8 +216,9 @@ def pag_encuestas(col_preguntas, columna_unica, file):
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
         orden_semana = ["C1-S1", "C1-S2",
-                        "C1-S3", "C1-S4" , "C1-S5" , "C1-S6" , "C1-S7", "C1-S8" , "C2-S1" , "C2-S2" , "C2-S3" , "C2-S4" , "C2-S5" , "C2-S6"]
-        nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fue incluida posteriormente"]
+                        "C1-S3", "C1-S4", "C1-S5", "C1-S6", "C1-S7", "C1-S8", "C2-S1", "C2-S2", "C2-S3", "C2-S4", "C2-S5", "C2-S6"]
+        nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto",
+                 "Muy alto", "La pregunta fue incluida posteriormente"]
         df[pregunta] = df[pregunta].astype(str)
 
         answers = set(df[pregunta])
@@ -241,13 +242,13 @@ def pag_encuestas(col_preguntas, columna_unica, file):
         else:
             cat_order = list(answers)
 
-        category_orders = {pregunta: cat_order,
-                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92)], "Semana": orden_semana}
-
         if semana != []:
             df = df.loc[df.Semana.isin(semana)]
         if grupo != []:
             df = df.loc[df.Grupo.isin(grupo)]
+
+        category_orders = {pregunta: cat_order,
+                           "GENERO": ["F", "M", "Nb", "Otro"], "Grupo": [str(x) for x in range(1, 92) if x in grupo], "Semana": [x for x in orden_semana if x in semana]}
 
         df["Grupo"] = df["Grupo"].astype(str)
         if len(df) == 0:
@@ -361,7 +362,7 @@ def pag_docentes(col_preguntas, columna_unica, file):
 
         Si_No = ["Sí", "No"]
         orden_semana = ["C1-Sem1", "C1-Sem2",
-                        "C1-Sem3", "C1-Sem4" , "C1-Sem5"]
+                        "C1-Sem3", "C1-Sem4", "C1-Sem5"]
         Num = [str(x) for x in range(1, 11)]
 
         try:
