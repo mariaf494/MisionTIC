@@ -216,7 +216,7 @@ def pag_encuestas(col_preguntas, columna_unica, file):
         tiempo = ["1 hora", "2 horas", "3 horas",
                   "4 horas", "5 horas", "Más de 5 horas"]
         orden_semana = ["C1-S1", "C1-S2",
-                        "C1-S3", "C1-S4" , "C1-S5" , "C1-S6" , "C1-S7" , "C2-S1" , "C2-S2" , "C2-S3" , "C2-S4" , "C2-S5" , "C2-S6"]
+                        "C1-S3", "C1-S4" , "C1-S5" , "C1-S6" , "C1-S7", "C1-S8" , "C2-S1" , "C2-S2" , "C2-S3" , "C2-S4" , "C2-S5" , "C2-S6"]
         nivel = ["Muy bajo", "Bajo", "Intermedio", "Alto", "Muy alto", "La pregunta fue incluida posteriormente"]
         df[pregunta] = df[pregunta].astype(str)
 
